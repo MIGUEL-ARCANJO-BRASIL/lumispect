@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./style.css";
-import lumisLogo from "../../assets/lumis-logo.png"; // Ajustei o path
+import lumisLogo from "../../assets/logo-lumis.png";
 import Header from "../../components/Layout/Header";
 import Footer from "../../components/Layout/Footer";
 

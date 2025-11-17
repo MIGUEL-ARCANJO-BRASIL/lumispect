@@ -4,32 +4,28 @@ import Header from "../../components/Layout/Header";
 import Footer from "../../components/Layout/Footer";
 import "./style.css"; // Importa o CSS da página
 
-// Importe imagens ou ícones de assets, se necessário.
-// Exemplo:
-// import iconFocus from "../assets/icon-focus.png";
-
 const Instructions = () => {
-  // Array para o conteúdo dos 4 pilares
+  // Array para o conteúdo dos 4 pilares - REFORMULADO PARA QUESTIONÁRIO
   const instructionSteps = [
     {
-      icon: "fas fa-bullseye",
-      title: "Concentre-se",
-      text: "Mantenha o foco total na tela. Pequenos detalhes farão a diferença.",
+      icon: "fas fa-brain",
+      title: "Reflexão Sincera",
+      text: "Responda pensando em como você geralmente se sente ou se comporta, e não em como gostaria de ser.",
     },
     {
-      icon: "fas fa-bolt",
-      title: "Seja Rápido",
-      text: "A velocidade da sua resposta é crucial. Não hesite!",
+      icon: "fas fa-ruler-combined",
+      title: "Entenda a Afirmação",
+      text: "Leia cada frase com atenção. O questionário aborda diferentes traços de sensibilidade e rigidez cognitiva.",
     },
     {
-      icon: "fas fa-mouse-pointer",
-      title: "Selecione as Respostas",
-      text: "Use o mouse ou a tela de toque para interagir com o jogo.",
+      icon: "fas fa-check-double",
+      title: "Escolha o Grau",
+      text: "Selecione a opção que melhor reflete sua experiência: (Concordo/Discordo totalmente, Sempre/Nunca, etc.).",
     },
     {
-      icon: "fas fa-question-circle",
+      icon: "fas fa-heart", // Mantido o ícone ou trocado para algo mais neutro
       title: "Sem Certo ou Errado",
-      text: "O objetivo é mapear seu padrão, não te julgar. Apenas seja você.",
+      text: "Não há respostas boas ou ruins. Sua honestidade garante o resultado mais fiel ao seu perfil.",
     },
   ];
 
@@ -41,16 +37,17 @@ const Instructions = () => {
         {/* Conteúdo Centralizado */}
         <div className="instructions-content">
           <h1 className="instructions-title">
-            <span className="title-prefix">Como Funciona o</span>
-            <span className="title-highlight"> Lumispect</span>
-            <span>?</span>
+            <span className="title-prefix">Guia para o</span>
+            <span className="title-highlight"> Questionário Lumispect</span>
           </h1>
           <h2 className="instructions-subtitle">
-            Você participará de uma série de jogos rápidos e divertidos.
+            Esta é uma autoavaliação desenvolvida para mapear a intensidade de
+            traços relacionados ao Espectro Autista.
           </h2>
 
           <hr className="divider" />
 
+          {/* SEÇÃO DE INSTRUÇÕES REFORMULADA */}
           <div className="steps-container">
             {instructionSteps.map((step, index) => (
               <div key={index} className="step-card">
@@ -61,18 +58,19 @@ const Instructions = () => {
               </div>
             ))}
           </div>
+          {/* FIM DA SEÇÃO DE INSTRUÇÕES */}
 
           <div className="ready-section">
             <p className="ready-text">
-              Descubra seus padrões de atenção, foco e velocidade de pensamento
-              através de jogos cognitivos interativos.
+              Ao iniciar, você responderá a 20 afirmações com base nas suas
+              experiências pessoais.
             </p>
 
             <Link
-              to="/avatar-game"
+              to="/questionnaire" // MUDANÇA: Direciona diretamente para o Questionário
               className="start-button button primary-button"
             >
-              <i className="fas fa-play"></i> Começar
+              <i className="fas fa-play"></i> Iniciar Autoavaliação
             </Link>
           </div>
         </div>

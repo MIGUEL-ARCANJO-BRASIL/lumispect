@@ -1,18 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
+import fametroLogo from "../../../assets/logo-fametro.png";
+import inovatechLogo from "../../../assets/logo-inovatech.png";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-logos">
         <div className="logo-item">
-          <span style={{ fontWeight: "600", color: "#888" }}>Logo Fametro</span>
+          <img src={fametroLogo} width={140} alt="Fametro" />
         </div>
         <div className="logo-item">
-          <span style={{ fontWeight: "600", color: "#888" }}>
-            Logo Inovatech
-          </span>
+          <img src={inovatechLogo} width={170} alt="Inovatech" />
         </div>
         <Link to="/references" className="logo-item references">
           Referências

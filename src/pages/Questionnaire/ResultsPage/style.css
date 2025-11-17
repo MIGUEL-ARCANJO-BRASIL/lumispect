@@ -8,6 +8,11 @@
   min-height: 100vh;
   background-color: #f7f9fc;
 }
+.explanation-section {
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+}
 
 .results-main {
   flex-grow: 1;
@@ -18,7 +23,7 @@
 }
 
 .results-container {
-  max-width: 700px;
+  max-width: 900px;
   width: 100%;
 }
 
@@ -97,7 +102,7 @@
 }
 
 .score-label {
-  font-size: 1.1em;
+  font-size: 1.4em;
   font-weight: 600;
   color: #666;
   margin: 0;
@@ -113,6 +118,8 @@
 /* Seção de Recomendação */
 .recommendation-section {
   text-align: left;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .category-title {
@@ -250,6 +257,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: white;
+  color: black;
 }
 
 .email-submit-button {

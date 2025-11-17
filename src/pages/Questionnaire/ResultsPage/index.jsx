@@ -58,17 +58,13 @@ const getResultData = (scorePercentage) => {
     category = "Traços autistas são mais prováveis";
     recommendationText = `Atenção, o resultado do seu teste sugere que você experiementou de forma mais intensa os sintomas do autismo, provavelmente causando incômodo considerável, e que pode ficar bem complicado se não for devidamente diagnosticado com rapidez. Recomendamos procurar ajuda médica especializada para lidar com esse provável quadro de autismo o quanto antes.`;
     nextStepsLink =
-      "Conheça as 15 melhores TERAPIAS QUE TRATAM O AUTISMO e descubra qual é a mais indicada para você.";
+      "Fazer uma boa TERAPIA é uma forma de impedir que o desconforto avance.";
   } else if (scorePercentage >= 40) {
     category = "Sinais de Atenção: Traços de Rigidez e Sensibilidade";
     recommendationText = `O seu resultado indica uma presença moderada de traços relacionados ao espectro. Embora não seja um diagnóstico, esses traços podem impactar seu bem-estar diário. Considerar uma avaliação com um profissional pode ser útil para melhor autoconhecimento e desenvolvimento de estratégias.`;
-    nextStepsLink =
-      "Fazer uma boa TERAPIA é uma forma de impedir que o desconforto avance. Conheça as 15 melhores TERAPIAS para autoconhecimento e bem-estar.";
   } else {
     category = "Traços Comuns ou Baixa Probabilidade";
     recommendationText = `O seu resultado sugere que as suas experiências se alinham mais com o padrão neurotípico, com pouca intensidade nos traços avaliados. Continue focando no seu bem-estar geral.`;
-    nextStepsLink =
-      "Se tiver dúvidas sobre o resultado ou desejar mais informações sobre o funcionamento do cérebro, clique aqui.";
   }
   return { category, recommendationText, nextStepsLink };
 };
@@ -157,6 +153,7 @@ const ResultsPage = () => {
           <div className="result-card">
             <div className="score-section">
               {/* GRÁFICO DE ROSCA (DONUT) */}
+
               <div
                 className={`score-circle score-${
                   result.score >= 70
@@ -172,7 +169,14 @@ const ResultsPage = () => {
               >
                 <p className="score-number">{result.score}%</p>
               </div>
-              <h2 className="score-label">Resultado do teste:</h2>
+            </div>
+
+            <div className="explanation-section">
+              <p className="explanation-text">
+                Esta porcentagem representa o quão alinhadas estão suas
+                respostas com o escore máximo possível de traços avaliados pelo
+                questionário Lumispect.
+              </p>
             </div>
 
             {/* BOTÃO DE DETALHES */}
@@ -188,17 +192,20 @@ const ResultsPage = () => {
             <hr className="divider" />
 
             <div className="recommendation-section">
-              <h3 className="category-title">Categoria: {result.category}</h3>
+              <h3 className="category-title">Categoria - {result.category}</h3>
 
               <p className="recommendation-text">{result.recommendation}</p>
 
-              <div className="next-steps">
-                <p className="next-steps-text">{result.nextSteps}</p>
-                <a href="#" className="call-to-action-button">
-                  <i className="fas fa-arrow-right"></i> Ver Terapias
-                  Recomendadas
-                </a>
-              </div>
+              {/* Condicional para o Next Steps, agora correto */}
+              {result.score >= 70 && (
+                <div className="next-steps">
+                  <p className="next-steps-text">{result.nextSteps}</p>
+                  <a href="#" className="call-to-action-button">
+                    <i className="fas fa-arrow-right"></i> Ver Terapias
+                    Recomendadas
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -226,7 +233,7 @@ const ResultsPage = () => {
 
             <p className="disclaimer-text">
               Lembre-se: o LUMISPECT é uma ferramenta de triagem e
-              autoconhecimento, **e não substitui o diagnóstico clínico**. Se os
+              autoconhecimento, e não substitui o diagnóstico clínico. Se os
               resultados levantarem preocupações, recomendamos que você procure
               um profissional de saúde qualificado para uma avaliação formal.
             </p>
@@ -245,12 +252,7 @@ const ResultsPage = () => {
                 placeholder="Seu email"
                 className="email-input"
               />
-              <a
-                href={`mailto:?subject=Meu%20Resultado%20LUMISPECT%20(${result.category})`}
-                className="action-button email-submit-button"
-              >
-                Enviar
-              </a>
+              <a className="action-button email-submit-button">Enviar</a>
             </div>
 
             <div className="action-buttons-group column-buttons">
