@@ -124,28 +124,67 @@
 /* RESPONSIVIDADE */
 /* ==================================== */
 @media (max-width: 850px) {
+  .instructions-title {
+    font-size: 2.5em;
+  }
+
+  .instructions-subtitle {
+    font-size: 1.3em;
+  }
+
   .steps-container {
     gap: 20px;
+    padding: 0 10px; /* Adiciona um pouco de padding lateral */
   }
+
   .step-card {
-    /* Em telas menores, 2 cards por linha */
-    flex: 1 1 calc(50% - 15px);
-    min-width: 150px;
+    /* Mantém 2 cards por linha */
+    flex: 1 1 calc(50% - 10px); /* Ajusta o cálculo da largura */
+    min-width: unset; /* Remove min-width fixo para maior flexibilidade */
   }
 }
 
+/* Mobile (max-width: 550px) */
 @media (max-width: 550px) {
-  .instructions-title {
-    font-size: 2em;
+  .instructions-main {
+    padding-bottom: 30px; /* Menos espaço no final em mobile */
   }
+
+  .instructions-title {
+    font-size: 1.8em;
+  }
+
   .instructions-subtitle {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+  }
+
+  .step-card {
+    /* Força 1 card por linha */
+    flex: 1 1 100%;
+    margin-bottom: 10px; /* Adiciona margem entre os cards empilhados */
+    padding: 25px 15px;
+  }
+
+  .step-icon {
+    font-size: 2.5em; /* Reduz o tamanho do ícone */
+  }
+
+  .step-title {
     font-size: 1.2em;
   }
-  .step-card {
-    /* Em telas muito pequenas, 1 card por linha */
-    flex: 1 1 100%;
+
+  .ready-section {
+    width: 95%; /* Ocupa quase toda a largura para melhor visualização do texto */
   }
+
   .ready-text {
+    font-size: 1em;
+    padding: 0 10px;
+  }
+
+  .start-button {
+    padding: 12px 25px; /* Reduz o tamanho do botão */
     font-size: 1.1em;
   }
 }
