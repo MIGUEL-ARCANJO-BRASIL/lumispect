@@ -495,18 +495,35 @@
     opacity: 0.7;
   }
 }
-@media (max-width: 600px) {
-  /* Regras já existentes */
-  .results-main {
-    padding: 30px 15px;
-  }
-
+@media (max-width: 768px) {
   .results-title {
     font-size: 2em;
   }
 
+  /* Ajuste geral do card de resultados */
   .result-card {
-    padding: 30px 20px;
+    padding: 30px;
+  }
+
+  /* Reduz o tamanho do gráfico para telas menores */
+  .score-circle {
+    width: 180px;
+    height: 180px;
+    font-size: 1.8em;
+  }
+
+  .score-label {
+    font-size: 1.2em;
+  }
+
+  /* Faz as seções de explicação e recomendação ocuparem mais espaço */
+  .explanation-section {
+    width: 95%; /* Ocupa quase a largura total no mobile */
+    margin: 15px auto;
+  }
+
+  .recommendation-section {
+    width: 95%;
   }
 
   .category-title {
@@ -517,39 +534,90 @@
     font-size: 1em;
   }
 
-  /* 🔑 REGRAS PARA EMPILHAMENTO DO FOOTER */
-  .results-action-footer {
-    /* Garante padding lateral em telas pequenas */
-    padding: 20px 15px;
-  }
-
-  .footer-content-wrapper {
-    /* Empilha as colunas (esquerda e direita) */
+  /* Ajusta botões de ação superiores (Refazer e Concluir) */
+  .action-buttons-section {
     flex-direction: column;
     gap: 20px;
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+    width: 80%; /* Para que os botões fiquem centrados e empilhados */
+    max-width: 400px;
+    margin-bottom: 30px;
+  }
+
+  .action-buttons-section .action-button {
+    width: 100%; /* Faz os botões Refazer e Concluir ocuparem a largura total */
+  }
+
+  /* Empilhamento do Rodapé de Ações (Resultados, Email, Download) */
+  .results-action-footer {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 15px; /* Mais padding nas laterais */
   }
 
   .left-column,
   .right-column {
     width: 100%;
-    flex: none;
+    margin: 0; /* Remove a margem grande lateral */
     padding: 0;
   }
 
-  .action-buttons-group.column-buttons {
-    /* Empilha os botões de PDF e Voltar */
-    flex-direction: column;
+  .disclaimer-text {
+    width: 100%; /* Ocupa a largura total da coluna */
   }
 
-  .action-button,
-  .email-submit-button {
-    width: 100%; /* Faz botões e input ficarem em largura total */
+  .email-input-group {
+    flex-direction: column; /* Empilha input e botão de email */
+    gap: 5px;
   }
+
+  .email-submit-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Faz os botões de PDF ficarem em coluna */
+  .action-buttons-group.column-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-buttons-group.column-buttons .action-button {
+    width: 100%;
+  }
+
+  /* Modal de Detalhes */
   .modal-content {
     padding: 25px 15px;
     max-height: 95vh;
+  }
+}
+
+/* Regras para Telas Extra Pequenas (até 480px, para otimização extrema) */
+@media (max-width: 480px) {
+  .results-title {
+    font-size: 1.8em;
+  }
+
+  .result-card {
+    padding: 20px 10px;
+  }
+
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    font-size: 1.5em;
+  }
+
+  .score-label {
+    font-size: 1.1em;
+  }
+
+  .next-steps {
+    padding: 15px;
+  }
+
+  .call-to-action-button {
+    width: 100%; /* Garante que o botão de terapia ocupe a largura total */
+    justify-content: center;
   }
 }

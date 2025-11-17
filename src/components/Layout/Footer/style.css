@@ -28,9 +28,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 35px;
+
   text-decoration: none;
   color: inherit;
+}
+.logo-item img {
+  width: auto;
+  height: auto;
+  max-height: 50px;
+  max-width: 150px;
+  object-fit: contain;
 }
 
 .logo-item p,
@@ -57,6 +64,11 @@
 @media (max-width: 768px) {
   .footer-logos {
     flex-direction: column;
-    gap: 10px;
+    gap: 15px; /* Aumentado o gap para melhor espaçamento vertical */
+  }
+
+  .logo-item img {
+    max-height: 40px;
+    max-width: 120px;
   }
 }

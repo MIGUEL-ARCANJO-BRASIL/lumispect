@@ -9,10 +9,10 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-logos">
         <div className="logo-item">
-          <img src={fametroLogo} width={140} alt="Fametro" />
+          <img src={fametroLogo} alt="Fametro" />
         </div>
         <div className="logo-item">
-          <img src={inovatechLogo} width={170} alt="Inovatech" />
+          <img src={inovatechLogo} alt="Inovatech" />
         </div>
         <Link to="/references" className="logo-item references">
           Referências
