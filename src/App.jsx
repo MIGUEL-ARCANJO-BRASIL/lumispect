@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Instructions from "./pages/Instructions";
 import QuestionnairePage from "./pages/Questionnaire/QuestionnairePage";
 import AvatarGame from "./pages/Questionnaire/AvatarGame";
+import ResultsPage from "./pages/Questionnaire/ResultsPage";
 
 const QuizPage = () => (
   <div style={{ padding: "4rem", textAlign: "center" }}>
@@ -52,8 +53,8 @@ function App() {
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/avatar-game" element={<AvatarGame />} />
           <Route path="/questionnaire" element={<QuestionnairePage />} />
+          <Route path="/results" element={<ResultsPage />} />
           <Route path="/games" element={<Games />} />
-          <Route path="/results" element={<Results />} />
           <Route path="/about" element={<About />} />
           <Route path="/references" element={<References />} />
         </Routes>

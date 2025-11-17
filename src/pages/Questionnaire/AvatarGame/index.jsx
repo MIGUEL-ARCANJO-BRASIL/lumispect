@@ -154,12 +154,12 @@ const AvatarGame = () => {
                 onClick={handleGenerate}
                 disabled={!isAllSelected}
               >
-                Gerar Questionário e Visualizar Perfil
+                Ir para o Questionário
                 <i className="fas fa-arrow-right"></i>
               </button>
               {!isAllSelected && (
                 <p className="selection-status">
-                  Selecione **todas as 4 opções** para continuar.
+                  Selecione todas as 4 opções para continuar.
                 </p>
               )}
             </div>

@@ -1,4 +1,5 @@
 .questionnaire-page {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -172,9 +173,9 @@
 /* 6. NAVEGAÇÃO INFERIOR E BOTÕES */
 /* ================================= */
 
-.navigation-section.bottom-navigation {
+.navigation-section {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-top: 50px;
   padding: 0 20px;
@@ -234,6 +235,16 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.result-button:disabled {
+  background-color: var(
+    --amarelo-claro
+  ); /* Usa o amarelo mais claro para o estado inativo */
+  color: #a8a8a8; /* Cor do texto mais neutra */
+  opacity: 0.8;
+  cursor: not-allowed;
+  transform: none; /* Remove a transformação de hover para o estado disabled */
+  box-shadow: none; /* Remove a sombra do estado de hover/ativo */
+}
 .result-button:hover:not(:disabled) {
   background-color: #fbdc70;
   transform: translateY(-2px);
@@ -268,7 +279,7 @@
     font-size: 1.2em;
   }
 
-  .navigation-section.bottom-navigation {
+  .navigation-section {
     flex-direction: column;
     gap: 15px;
     align-items: stretch;

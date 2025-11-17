@@ -1,0 +1,479 @@
+/* ================================= */
+/* ESTILOS GERAIS DA PÁGINA */
+/* ================================= */
+.results-page {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f7f9fc;
+}
+
+.results-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column; /* Necessário para alinhar o container e o footer */
+  align-items: center; /* Centraliza o conteúdo (container e footer) */
+  padding: 50px 20px;
+}
+
+.results-container {
+  max-width: 700px;
+  width: 100%;
+}
+
+.results-title {
+  font-size: 2.5em;
+  font-weight: 800;
+  color: var(--texto-principal);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.results-title .title-highlight {
+  color: var(--destaque-azul);
+}
+
+/* ================================= */
+/* CARD DE RESULTADOS */
+/* ================================= */
+.result-card {
+  background-color: var(--fundo-card);
+  border-radius: 15px;
+  box-shadow: var(--sombra-leve);
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Seção de Pontuação */
+.score-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.score-circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 2em;
+  color: white;
+  transition: var(--transicao);
+}
+
+/* Cores do Círculo de Pontuação */
+.score-high {
+  background-color: #f55d5d; /* Vermelho/Alerta */
+  box-shadow: 0 0 15px rgba(245, 93, 93, 0.5);
+}
+
+.score-medium {
+  background-color: var(--amarelo-destaque); /* Amarelo */
+  color: var(--texto-principal);
+  box-shadow: 0 0 15px rgba(246, 216, 96, 0.5);
+}
+
+.score-low {
+  background-color: var(--destaque-azul); /* Azul/Bom */
+  box-shadow: 0 0 15px rgba(75, 140, 245, 0.5);
+}
+
+.score-circle i {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.score-number {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.score-label {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #666;
+  margin: 0;
+}
+
+.divider {
+  width: 80%;
+  margin: 25px auto;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+/* Seção de Recomendação */
+.recommendation-section {
+  text-align: left;
+}
+
+.category-title {
+  font-size: 1.6em;
+  color: var(--destaque-azul);
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.recommendation-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: var(--texto-principal);
+  margin-bottom: 25px;
+}
+
+/* Próximos Passos (Ação) */
+.next-steps {
+  background-color: var(--amarelo-claro);
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid var(--amarelo-destaque);
+  margin-top: 20px;
+}
+
+.next-steps-text {
+  font-weight: 600;
+  color: var(--texto-principal);
+  margin-bottom: 15px;
+}
+
+.call-to-action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
+  background-color: var(--amarelo-destaque);
+  color: var(--texto-principal);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: var(--transicao);
+  border: none;
+  cursor: pointer;
+}
+
+.call-to-action-button:hover {
+  background-color: #f4cf40;
+  transform: translateY(-1px);
+}
+
+.section-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 50px;
+}
+
+.action-button.retake-button {
+  background-color: var(--azul-claro);
+  color: var(--destaque-azul);
+  border: 2px solid var(--destaque-azul);
+  padding: 12px 25px;
+  font-size: 1em;
+  font-weight: 600;
+  transition: var(--transicao);
+}
+.action-button.retake-button:hover {
+  background-color: var(--destaque-azul);
+  color: white;
+}
+/* Estilo para Concluir (Primário/Final) */
+.action-button.finish-button {
+  background-color: var(--destaque-azul);
+  color: white;
+  border: 2px solid var(--destaque-azul);
+  padding: 12px 25px;
+  font-size: 1em;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(75, 140, 245, 0.3);
+  transition: var(--transicao);
+}
+.action-button.finish-button:hover {
+  background-color: #3a68c0;
+  transform: translateY(-2px);
+}
+
+/* Contêiner Principal: Ocupa 100% da Largura da Tela */
+.results-action-footer {
+  width: 100%;
+  background-color: var(--fundo-card); /* Cor de fundo para toda a faixa */
+  padding: 30px 20px;
+  margin: 20px auto;
+  border-top: 1px solid #ddd;
+  display: flex;
+}
+
+.left-column,
+.right-column {
+  width: 50%;
+  padding: 0 10px;
+  margin: 0 50px;
+}
+
+.final-message-highlight {
+  font-size: 1.5em;
+  color: var(--destaque-azul);
+  margin-bottom: 10px;
+}
+
+.disclaimer-text {
+  text-align: justify;
+  width: 80%;
+}
+
+.final-message-title {
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.email-prompt {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Campo de Email e Botão 'Enviar' */
+.email-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.email-input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.email-submit-button {
+  background-color: var(--destaque-azul);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.email-submit-button:hover {
+  background-color: #3b82f6;
+}
+
+/* Botões 'Baixar PDF' e 'Voltar' */
+.action-buttons-group.column-buttons {
+  display: flex;
+  flex-direction: row; /* Lado a lado no desktop */
+  gap: 10px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.3s;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.download-button {
+  background-color: #a8a8a8;
+  color: white;
+}
+.download-button:hover {
+  background-color: #888;
+}
+
+.back-home-button {
+  background-color: #f0f0f0;
+  color: var(--texto-principal);
+}
+.back-home-button:hover {
+  background-color: #e0e0e0;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que fique acima de todo o conteúdo da página */
+  overflow-y: auto; /* Permite rolar se o conteúdo for grande */
+}
+
+.modal-content {
+  background: var(--fundo-card);
+  padding: 35px;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  max-height: 90vh; /* Limita a altura do modal na tela */
+  overflow-y: auto; /* Adiciona rolagem interna, se necessário */
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+  color: var(--destaque-azul);
+}
+
+.modal-title {
+  color: var(--destaque-azul);
+  font-size: 2em;
+  margin-bottom: 5px;
+  font-weight: 800;
+}
+
+.modal-subtitle {
+  font-size: 0.9em;
+  color: #888;
+  margin-bottom: 25px;
+}
+
+.response-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.response-item {
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+}
+
+.response-id {
+  font-weight: 700;
+  color: var(--destaque-azul);
+  font-size: 1.1em;
+  margin-bottom: 5px;
+}
+
+.response-question {
+  font-weight: 500;
+  color: var(--texto-principal);
+  margin: 0 0 5px 0;
+}
+
+.response-answer {
+  font-style: italic;
+  font-weight: 700;
+  color: #555;
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  align-self: flex-start; /* Para que o span não ocupe toda a largura */
+}
+
+.modal-close-action {
+  margin-top: 30px;
+  background-color: var(--destaque-azul);
+  color: white;
+  width: 100%;
+  border: none;
+  padding: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.modal-close-action:hover {
+  background-color: #3a68c0;
+}
+
+.action-button.detail-button {
+  background-color: var(--destaque-azul);
+}
+.action-buttons-section {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 50px;
+}
+@media (max-width: 600px) {
+  /* Regras já existentes */
+  .results-main {
+    padding: 30px 15px;
+  }
+
+  .results-title {
+    font-size: 2em;
+  }
+
+  .result-card {
+    padding: 30px 20px;
+  }
+
+  .category-title {
+    font-size: 1.4em;
+  }
+
+  .recommendation-text {
+    font-size: 1em;
+  }
+
+  /* 🔑 REGRAS PARA EMPILHAMENTO DO FOOTER */
+  .results-action-footer {
+    /* Garante padding lateral em telas pequenas */
+    padding: 20px 15px;
+  }
+
+  .footer-content-wrapper {
+    /* Empilha as colunas (esquerda e direita) */
+    flex-direction: column;
+    gap: 20px;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+
+  .left-column,
+  .right-column {
+    width: 100%;
+    flex: none;
+    padding: 0;
+  }
+
+  .action-buttons-group.column-buttons {
+    /* Empilha os botões de PDF e Voltar */
+    flex-direction: column;
+  }
+
+  .action-button,
+  .email-submit-button {
+    width: 100%; /* Faz botões e input ficarem em largura total */
+  }
+  .modal-content {
+    padding: 25px 15px;
+    max-height: 95vh;
+  }
+}
