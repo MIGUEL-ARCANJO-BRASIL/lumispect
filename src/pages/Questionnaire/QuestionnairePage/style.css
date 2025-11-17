@@ -1,0 +1,295 @@
+.questionnaire-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.questionnaire-main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alinha o conteúdo no topo */
+  padding: 50px 20px;
+}
+
+.questionnaire-container {
+  max-width: 850px;
+  width: 100%;
+}
+
+/* ================================= */
+/* 2. TÍTULO */
+/* ================================= */
+.questionnaire-title {
+  font-size: 2.5em;
+  font-weight: 800;
+  color: var(--texto-principal);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.questionnaire-title .title-highlight {
+  color: var(--destaque-azul);
+}
+
+/* ================================= */
+/* 3. SEÇÃO DE QUESTÃO E BOTÃO DE TOPO */
+/* ================================= */
+.main-content-wrapper {
+  /* Garante que o conteúdo da questão ocupe a largura total */
+  width: 100%;
+}
+
+.question-section {
+  /* Torna o contêiner principal de posicionamento para o botão de topo */
+  position: relative;
+  width: 100%;
+  /* Adiciona padding extra para o botão do topo não sobrepor o conteúdo */
+  padding-top: 50px;
+}
+
+.nav-button.top-left-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+
+  background-color: var(--azul-claro);
+  border: 2px solid var(--destaque-azul);
+  color: var(--destaque-azul);
+  font-weight: 600;
+  padding: 10px 15px;
+  font-size: 0.95em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transicao);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--sombra-leve);
+}
+
+.nav-button.top-left-button:hover {
+  background-color: var(--destaque-azul);
+  color: white;
+}
+
+/* ================================= */
+/* 4. CARD E PROGRESSO */
+/* ================================= */
+.question-card {
+  background-color: var(--fundo-card);
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.question-card.single-question-view {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.question-progress {
+  text-align: right;
+  font-size: 0.9em;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--amarelo-destaque);
+  transition: width 0.5s ease;
+  border-radius: 4px;
+}
+
+.question-text {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin-bottom: 30px;
+  flex-grow: 1; /* Empurra as opções para baixo */
+}
+
+/* ================================= */
+/* 5. OPÇÕES DE RESPOSTA */
+/* ================================= */
+.answer-options {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.answer-options.full-width-options {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.answer-button {
+  padding: 12px 20px;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transicao);
+  text-align: center;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  color: var(--texto-principal);
+  white-space: nowrap;
+}
+
+.answer-button.large-button {
+  width: 100%;
+  padding: 15px 25px;
+}
+
+.answer-button:hover:not(.selected) {
+  border-color: var(--destaque-azul);
+  background-color: var(--azul-claro);
+}
+
+/* Estado Selecionado */
+.answer-button.selected {
+  background-color: var(--destaque-azul);
+  color: white;
+  border-color: var(--destaque-azul);
+  box-shadow: 0 4px 10px rgba(75, 140, 245, 0.3);
+}
+
+/* ================================= */
+/* 6. NAVEGAÇÃO INFERIOR E BOTÕES */
+/* ================================= */
+
+.navigation-section.bottom-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  padding: 0 20px;
+  width: 100%;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* O grupo de navegação esquerdo agora só tem o botão Anterior */
+.nav-left-group {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.nav-button {
+  background-color: transparent;
+  border: 2px solid var(--destaque-azul);
+  color: var(--destaque-azul);
+  padding: 12px 25px;
+  font-size: 1em;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-button:hover:not(:disabled) {
+  background-color: var(--destaque-azul);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Botão de Finalização */
+.result-button {
+  background-color: var(--amarelo-destaque);
+  color: var(--texto-principal);
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transicao);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-button:hover:not(:disabled) {
+  background-color: #fbdc70;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================= */
+/* 7. RESPONSIVIDADE (Tablets e Celulares) */
+/* ================================= */
+
+@media (max-width: 768px) {
+  .questionnaire-title {
+    font-size: 2em;
+  }
+
+  .question-section {
+    padding-top: 70px; /* Mais espaço para o botão de topo em telas pequenas */
+  }
+
+  /* Ajusta a posição do botão de topo para a borda da tela */
+  .nav-button.top-left-button {
+    left: 20px;
+    top: 15px;
+  }
+
+  .question-card {
+    padding: 20px;
+    min-height: 300px;
+  }
+
+  .question-text {
+    font-size: 1.2em;
+  }
+
+  .navigation-section.bottom-navigation {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  /* Faz o grupo esquerdo (Anterior) ocupar a largura total */
+  .nav-left-group {
+    width: 100%;
+    gap: 0; /* Remove gap */
+  }
+
+  /* Força o botão anterior a ser full width */
+  .nav-button.prev {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .result-button,
+  .nav-button.next {
+    width: 100%;
+    justify-content: center;
+  }
+}

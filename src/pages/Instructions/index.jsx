@@ -69,7 +69,7 @@ const Instructions = () => {
             </p>
 
             <Link
-              to="/questionnaire"
+              to="/avatar-game"
               className="start-button button primary-button"
             >
               <i className="fas fa-play"></i> Começar

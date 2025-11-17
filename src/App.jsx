@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Instructions from "./pages/Instructions";
-import Questionnaire from "./pages/Questionnaire";
+import QuestionnairePage from "./pages/Questionnaire/QuestionnairePage";
+import AvatarGame from "./pages/Questionnaire/AvatarGame";
 
 const QuizPage = () => (
   <div style={{ padding: "4rem", textAlign: "center" }}>
@@ -49,7 +50,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/instructions" element={<Instructions />} />
           <Route path="/quiz" element={<QuizPage />} />
-          <Route path="/questionnaire" element={<Questionnaire />} />
+          <Route path="/avatar-game" element={<AvatarGame />} />
+          <Route path="/questionnaire" element={<QuestionnairePage />} />
           <Route path="/games" element={<Games />} />
           <Route path="/results" element={<Results />} />
           <Route path="/about" element={<About />} />
