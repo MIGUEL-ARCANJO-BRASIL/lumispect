@@ -68,12 +68,12 @@ const avatarSteps = [
   },
 ];
 
-const STORAGE_KEY = "avatarGameChoices";
+const STORAGE_KEY_AVATAR = "avatarGameChoices";
 
 const AvatarGame = () => {
   // 1. Inicializa o estado lendo do sessionStorage
   const [selectedChoices, setSelectedChoices] = useState(() => {
-    const savedChoices = sessionStorage.getItem(STORAGE_KEY);
+    const savedChoices = sessionStorage.getItem(STORAGE_KEY_AVATAR);
     // Se houver dados salvos, retorna eles. Caso contrário, retorna um objeto vazio.
     return savedChoices ? JSON.parse(savedChoices) : {};
   });
@@ -82,7 +82,7 @@ const AvatarGame = () => {
 
   // 2. Persiste o estado no sessionStorage sempre que 'selectedChoices' mudar
   useEffect(() => {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(selectedChoices));
+    sessionStorage.setItem(STORAGE_KEY_AVATAR, JSON.stringify(selectedChoices));
   }, [selectedChoices]); // O array de dependências garante que isso rode em cada mudança
 
   const handleSelect = (stepKey, option) => {
@@ -103,9 +103,7 @@ const AvatarGame = () => {
   const handleGenerate = () => {
     if (isAllSelected) {
       console.log("Perfil Gerado/Questionário Mapeado:", selectedChoices);
-      alert(
-        "Seu perfil foi criado! As respostas do questionário foram inferidas e estão prontas para o processamento."
-      );
+
       // Aqui seria o código para mapear selectedChoices para as 20 perguntas do Questionário Lumispect
     }
     navigate("/questionnaire");

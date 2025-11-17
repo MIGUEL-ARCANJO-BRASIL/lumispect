@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 import "./style.css";
 import ModalDetailsResult from "./Components/Modal";
+import LoadingScreen from "../../../components/UI/LoadingScreen";
 
 // Chaves de armazenamento
 const STORAGE_KEY_ANSWERS = "questionnaireAnswers";
 const STORAGE_KEY_INDEX = "currentQuestionIndex";
+const STORAGE_KEY_AVATAR = "avatarGameChoices";
 
 // ===================================
 // LÓGICA DE PONTUAÇÃO (Mantida)
@@ -111,12 +113,16 @@ const ResultsPage = () => {
   const handleRetake = () => {
     sessionStorage.removeItem(STORAGE_KEY_ANSWERS);
     sessionStorage.removeItem(STORAGE_KEY_INDEX);
-    navigate("/questionnaire");
+    sessionStorage.removeItem(STORAGE_KEY_AVATAR);
+
+    navigate("/avatar-game");
   };
 
   const handleFinish = () => {
     sessionStorage.removeItem(STORAGE_KEY_ANSWERS);
     sessionStorage.removeItem(STORAGE_KEY_INDEX);
+    sessionStorage.removeItem(STORAGE_KEY_AVATAR);
+
     navigate("/");
   };
 
@@ -125,11 +131,7 @@ const ResultsPage = () => {
   };
 
   if (loading || !result) {
-    return (
-      <div className="loading-screen">
-        <p>Carregando resultados...</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   // Define a cor de destaque do gráfico com base na pontuação
