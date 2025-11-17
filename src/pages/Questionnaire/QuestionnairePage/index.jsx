@@ -18,9 +18,9 @@ const BASE_OPTIONS = [
 
 const COMPLEMENTARY_OPTIONS = [
   "Sempre",
-  "Raramente",
-  "Às vezes",
   "Frequentemente",
+  "Às vezes",
+  "Raramente",
   "Nunca",
 ];
 
