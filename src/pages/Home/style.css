@@ -168,16 +168,15 @@
   color: var(--cor-secundaria);
   line-height: 1.5;
 }
-
 /* Definição da Animação de Pulsação */
 @keyframes pulse-aviso {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.7); /* d9534f com opacidade */
+    box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.7);
   }
   70% {
-    transform: scale(1.02); /* Leve aumento de tamanho */
-    box-shadow: 0 0 0 10px rgba(217, 83, 79, 0); /* Expansão e desaparecimento da sombra */
+    transform: scale(1.02);
+    box-shadow: 0 0 0 10px rgba(217, 83, 79, 0);
   }
   100% {
     transform: scale(1);
@@ -185,7 +184,7 @@
   }
 }
 
-/* Estilos do Aviso Educativo (Atualizados) */
+/* Estilos do Aviso Educativo (Correção da Sintaxe da Animação) */
 .aviso-educativo {
   margin-top: 30px;
   font-size: 1.2em;
@@ -196,15 +195,18 @@
   padding: 10px 20px;
   border-radius: 5px;
   background-color: #fffafa;
+  /* Largura fixa para desktop/telas grandes */
   width: 800px;
 
-  animation: pulse-aviso s infinite; /* Nome, duração, e rodar infinitamente */
+  /* Animação corrigida e aplicada no desktop */
+  animation: pulse-aviso 1s infinite;
 }
 
 .div-aviso-educativo {
   margin-bottom: 50px;
-  text-align: center; /* Centraliza o elemento inline-block .aviso-educativo */
+  text-align: center;
 }
+
 /* ==================================== */
 /* RESPONSIVIDADE (Ajustada para a Home) */
 /* ==================================== */
@@ -259,5 +261,22 @@
   .pilar-card {
     width: 90%;
     margin-bottom: 20px;
+  }
+
+  .div-aviso-educativo {
+    width: 100%;
+    padding: 0 20px; /* Adiciona padding lateral para que o aviso não cole nas bordas */
+    box-sizing: border-box;
+    margin-bottom: 30px; /* Ajusta margem inferior em mobile */
+  }
+
+  /* 2. Ajuste a largura do ELEMENTO DO AVISO para 100% (dentro do padding) */
+  .aviso-educativo {
+    width: 100%; /* Ocupa a largura total disponível */
+    font-size: 1em; /* Reduz o tamanho da fonte para mobile */
+    padding: 15px 15px; /* Ajusta o padding interno */
+
+    /* A ANIMAÇÃO CONTINUA FUNCIONANDO */
+    animation: pulse-aviso 2s infinite;
   }
 }
