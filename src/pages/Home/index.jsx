@@ -40,6 +40,12 @@ const Home = () => {
         </div>
       </div>
 
+      <div className="div-aviso-educativo">
+        <p className="aviso-educativo">
+          Lembrete: O Lumispect é uma ferramenta educativa e{" "}
+          <strong>não substitui avaliação profissional</strong>.
+        </p>
+      </div>
       {/* 3. SEÇÃO SOBRE O PROJETO */}
       <section id="sobre-projeto">
         <h2>O que é o Lumispect?</h2>
@@ -77,11 +83,6 @@ const Home = () => {
             </p>
           </div>
         </div>
-
-        <p className="aviso-educativo">
-          Lembrete: O Lumispect é uma ferramenta educativa e{" "}
-          <strong>não substitui avaliação profissional</strong>.
-        </p>
       </section>
 
       {/* 4. FOOTER (Componente) */}

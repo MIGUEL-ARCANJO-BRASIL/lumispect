@@ -38,46 +38,6 @@ const QUESTIONS_DATA = [
     id: 10,
     text: "Eu tenho movimentos repetitivos ou 'stimming' (como balançar, bater os dedos).",
   },
-  {
-    id: 11,
-    text: "Com que frequência você tem reações fortes a texturas ou tipos de roupa?",
-  },
-  {
-    id: 12,
-    text: "Com que frequência você planeja suas atividades com antecedência detalhada?",
-  },
-  {
-    id: 13,
-    text: "Com que frequência você tem dificuldade em entender sarcasmo ou figuras de linguagem?",
-  },
-  {
-    id: 14,
-    text: "Com que frequência você usa as mesmas palavras ou frases repetidamente?",
-  },
-  {
-    id: 15,
-    text: "Com que frequência você se sente exausto após interações sociais?",
-  },
-  {
-    id: 16,
-    text: "Com que frequência você se irrita com mudanças inesperadas em planos?",
-  },
-  {
-    id: 17,
-    text: "Com que frequência você prefere interagir com objetos em vez de pessoas?",
-  },
-  {
-    id: 18,
-    text: "Com que frequência você tem dificuldade em se acalmar após uma crise sensorial?",
-  },
-  {
-    id: 19,
-    text: "Com que frequência você tem uma dieta muito restrita ou seletiva?",
-  },
-  {
-    id: 20,
-    text: "Com que frequência você é muito sensível à dor ou temperatura?",
-  },
 ];
 
 const ModalDetailsResult = ({ isOpen, onClose, answers }) => {

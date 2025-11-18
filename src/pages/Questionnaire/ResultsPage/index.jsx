@@ -21,15 +21,9 @@ const SCORING_BASE = {
   "Discordo parcialmente": 2,
   "Discordo totalmente": 1,
 };
-const SCORING_COMPLEMENTARY = {
-  Sempre: 5,
-  Frequentemente: 4,
-  "Às vezes": 3,
-  Raramente: 2,
-  Nunca: 1,
-};
-const INVERTED_QUESTIONS = [9];
-const MAX_SCORE = 90;
+
+const INVERTED_QUESTIONS = [];
+const MAX_SCORE = 40;
 
 const calculateScore = (answers) => {
   let totalScore = 0;
@@ -43,8 +37,6 @@ const calculateScore = (answers) => {
       if (INVERTED_QUESTIONS.includes(questionId)) {
         score = 5 - score;
       }
-    } else if (questionId >= 11 && questionId <= 20) {
-      score = SCORING_COMPLEMENTARY[answer] || 0;
     }
     totalScore += score;
   }
@@ -72,8 +64,8 @@ const getResultData = (scorePercentage) => {
 const ResultsPage = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [answers, setAnswers] = useState(null); // Armazena respostas para passar ao modal
-  const [showDetailsModal, setShowDetailsModal] = useState(false); // Estado do modal
+  const [answers, setAnswers] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {

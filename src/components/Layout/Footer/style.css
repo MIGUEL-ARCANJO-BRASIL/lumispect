@@ -1,9 +1,7 @@
 :root {
   --cor-secundaria: #6c757d;
 }
-/* ==================================== */
-/* RODAPÉ ESTILOS */
-/* ==================================== */
+
 .footer {
   width: 100%;
   background-color: white;

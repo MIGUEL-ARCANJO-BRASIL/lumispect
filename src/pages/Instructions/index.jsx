@@ -62,7 +62,7 @@ const Instructions = () => {
 
           <div className="ready-section">
             <p className="ready-text">
-              Ao iniciar, você responderá a 20 afirmações com base nas suas
+              Ao iniciar, você responderá a 10 afirmações com base nas suas
               experiências pessoais.
             </p>
 

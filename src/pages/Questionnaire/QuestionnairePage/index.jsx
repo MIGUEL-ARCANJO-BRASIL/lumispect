@@ -16,14 +16,6 @@ const BASE_OPTIONS = [
   "Discordo totalmente",
 ];
 
-const COMPLEMENTARY_OPTIONS = [
-  "Sempre",
-  "Frequentemente",
-  "Às vezes",
-  "Raramente",
-  "Nunca",
-];
-
 // 2. MATRIZES DE PERGUNTAS (Não alteradas)
 const baseQuestions = [
   {
@@ -78,60 +70,7 @@ const baseQuestions = [
   },
 ];
 
-const complementaryQuestions = [
-  {
-    id: 11,
-    text: "Tenho dificuldade para fazer ou manter amizades.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 12,
-    text: "Tenho dificuldade para interpretar expressões faciais, gestos ou linguagem corporal.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 13,
-    text: "Mudanças inesperadas na minha rotina me estressam muito.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 14,
-    text: "Tenho interesses intensos e específicos que dominam grande parte do meu tempo.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 15,
-    text: "Entro em hiperfoco e perco a noção do tempo com facilidade.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 16,
-    text: "Tenho comportamentos repetitivos (mexer mãos, balançar, repetir palavras).",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 17,
-    text: "Sou muito sensível (ou pouco sensível) a sons, luzes, cheiros ou texturas.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 18,
-    text: "Entendo as coisas de forma muito literal e tenho dificuldade com ironias e sarcasmo.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 19,
-    text: "Sinto dificuldade em acompanhar o ritmo social de uma conversa.",
-    options: COMPLEMENTARY_OPTIONS,
-  },
-  {
-    id: 20,
-    text: 'Preciso "mascarar" meu jeito natural para parecer normal, e isso me exausta.',
-    options: COMPLEMENTARY_OPTIONS,
-  },
-];
-
-const allQuestions = [...baseQuestions, ...complementaryQuestions];
+const allQuestions = [...baseQuestions];
 
 const QuestionnairePage = () => {
   // 1. Inicializa o estado lendo do sessionStorage

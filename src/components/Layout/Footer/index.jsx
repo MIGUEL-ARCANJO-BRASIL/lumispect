@@ -19,7 +19,8 @@ const Footer = () => {
         </Link> */}
       </div>
       <div className="copyright">
-        &copy; 2025 Lumispect. Plataforma Gamificada de Autoavaliação Cognitiva.
+        &copy; 2025 Lumispect. Plataforma Gamificada de Auxílio Autoavaliativo
+        Cognitiva.
       </div>
     </footer>
   );
