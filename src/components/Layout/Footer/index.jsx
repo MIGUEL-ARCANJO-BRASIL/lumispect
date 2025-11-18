@@ -14,9 +14,9 @@ const Footer = () => {
         <div className="logo-item">
           <img src={inovatechLogo} alt="Inovatech" />
         </div>
-        <Link to="/references" className="logo-item references">
+        {/* <Link to="/references" className="logo-item references">
           Referências
-        </Link>
+        </Link> */}
       </div>
       <div className="copyright">
         &copy; 2025 Lumispect. Plataforma Gamificada de Autoavaliação Cognitiva.
