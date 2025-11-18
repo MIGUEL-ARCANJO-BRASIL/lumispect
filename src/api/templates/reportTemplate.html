@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Relatório Lumispect - Resultado Detalhado</title>
+    <style>
+      /* Variáveis de Cores */
+      :root {
+        --destaque-azul: #4b8cf5;
+        --texto-principal: #333333;
+        --cor-alta: #dc3545; /* Vermelho para High Score */
+        --cor-media: #ffc107; /* Amarelo para Medium Score */
+        --cor-baixa: #28a745; /* Verde para Low Score */
+      }
+
+      /* Estilos Globais do PDF */
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        color: var(--texto-principal);
+        font-size: 10pt;
+      }
+
+      /* Layout e Conteúdo */
+      .report-container {
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 30px;
+      }
+
+      /* Header e Título */
+      .report-header {
+        background-color: var(--destaque-azul);
+        color: white;
+        padding: 25px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 20px;
+      }
+      .report-header h1 {
+        margin: 0;
+        font-size: 1.8em;
+        font-weight: bold;
+      }
+
+      /* Seção de Resumo */
+      .summary-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+
+      /* Bloco de Pontuação (Dinâmico) */
+      .score-block {
+        padding: 15px 25px;
+        border-radius: 6px;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        min-width: 150px;
+      }
+      .score-block h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.5em;
+      }
+      .score-block p {
+        margin: 0;
+        font-size: 0.9em;
+      }
+
+      /* Classes dinâmicas injetadas pelo Node.js */
+      .score-high-style {
+        background-color: var(--cor-alta);
+      }
+      .score-medium-style {
+        background-color: var(--cor-media);
+        color: var(--texto-principal);
+      }
+      .score-low-style {
+        background-color: var(--cor-baixa);
+      }
+
+      /* Corpo da Categoria e Recomendação */
+      .category-details h2 {
+        color: var(--destaque-azul);
+        font-size: 1.4em;
+        margin-top: 0;
+      }
+      .recommendation {
+        line-height: 1.6;
+        margin-top: 15px;
+      }
+
+      /* Seção de Detalhes das Respostas */
+      .detailed-answers {
+        margin-top: 40px;
+        border-top: 2px solid var(--destaque-azul);
+        padding-top: 20px;
+      }
+      .detailed-answers h2 {
+        font-size: 1.3em;
+        color: var(--texto-principal);
+        margin-bottom: 15px;
+      }
+      .response-item {
+        display: flex;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed #eee;
+        padding-bottom: 10px;
+      }
+      .response-id {
+        font-weight: bold;
+        color: var(--destaque-azul);
+        width: 30px;
+        flex-shrink: 0;
+      }
+      .response-question {
+        flex-grow: 1;
+        padding-right: 20px;
+      }
+      .response-answer {
+        font-weight: bold;
+        font-style: italic;
+        text-align: right;
+        color: #555;
+        width: 150px;
+        flex-shrink: 0;
+      }
+
+      /* Footer e Aviso Legal */
+      .report-footer {
+        text-align: center;
+        margin-top: 50px;
+        padding: 15px 0;
+        border-top: 1px solid #ccc;
+        font-size: 0.8em;
+        color: #666;
+      }
+
+      /* Media Print para Forçar Quebra de Página antes do rodapé, se necessário */
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="report-container">
+      <div class="report-header">
+        <h1>RELATÓRIO LUMISPECT</h1>
+        <p>Resultado Detalhado do Questionário de Autoavaliação</p>
+      </div>
+
+      <div class="summary-section">
+        <div class="category-details">
+          <h2>Resultado Principal: {{CATEGORY}}</h2>
+          <p class="recommendation">{{RECOMMENDATION}}</p>
+        </div>
+
+        <div class="score-block {{SCORE_CLASS}}">
+          <h3>{{SCORE}}%</h3>
+          <p>Pontuação de Risco</p>
+        </div>
+      </div>
+
+      <div class="detailed-answers">
+        <h2>Suas Respostas</h2>
+        {{RESPONSES_LIST}}
+      </div>
+
+      <div class="report-footer">
+        <p>
+          AVISO LEGAL: Este é um teste de triagem e autoconhecimento e NÃO
+          substitui o diagnóstico clínico. Procure um profissional de saúde
+          qualificado para uma avaliação formal.
+        </p>
+        <p>Gerado em: {{DATE}}</p>
+      </div>
+    </div>
+  </body>
+</html>

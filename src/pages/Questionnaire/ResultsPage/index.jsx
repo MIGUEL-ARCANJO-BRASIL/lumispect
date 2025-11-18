@@ -306,7 +306,13 @@ const ResultsPage = () => {
         isOpen={showDetailsModal}
         onClose={() => setShowDetailsModal(false)}
         answers={answers}
-        questions={allQuestions}
+        questions={allQuestions} // allQuestions é a lista de perguntas
+        result={{
+          score: result.score,
+          category: result.category,
+          recommendation: result.recommendation,
+          questions: allQuestions, // Passa as perguntas aqui também para a função de share
+        }}
       />
     </div>
   );
