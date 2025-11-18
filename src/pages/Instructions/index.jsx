@@ -67,7 +67,7 @@ const Instructions = () => {
             </p>
 
             <Link
-              to="/questionnaire" // MUDANÇA: Direciona diretamente para o Questionário
+              to="/instructions-options" // MUDANÇA: Direciona diretamente para o Questionário
               className="start-button button primary-button"
             >
               <i className="fas fa-play"></i> Iniciar Autoavaliação

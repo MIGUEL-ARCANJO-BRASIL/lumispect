@@ -10,10 +10,9 @@ import LoadingScreen from "../../../components/UI/LoadingScreen";
 // Chaves de armazenamento
 const STORAGE_KEY_ANSWERS = "questionnaireAnswers";
 const STORAGE_KEY_INDEX = "currentQuestionIndex";
-const STORAGE_KEY_AVATAR = "avatarGameChoices";
 
 // ===================================
-// LÓGICA DE PONTUAÇÃO (Mantida)
+// LÓGICA DE PONTUAÇÃO E PERGUNTAS
 // ===================================
 const SCORING_BASE = {
   "Concordo totalmente": 4,
@@ -24,6 +23,49 @@ const SCORING_BASE = {
 
 const INVERTED_QUESTIONS = [];
 const MAX_SCORE = 40;
+
+const allQuestions = [
+  {
+    id: 1,
+    text: "Quando estou lendo uma história, normalmente me concentro mais nos personagens do que nos fatos.",
+  },
+  {
+    id: 2,
+    text: "Frequentemente me pego mais concentrado em detalhes do que no quadro geral.",
+  },
+  {
+    id: 3,
+    text: "Costumo ter dificuldades em entender o que outra pessoa está pensando ou sentindo.",
+  },
+  {
+    id: 4,
+    text: "Costumo gostar de planejar todas as minhas atividades de forma minuciosa.",
+  },
+  {
+    id: 5,
+    text: "Costumo me perder durante conversas porque tenho dificuldades em acompanhar o ritmo.",
+  },
+  {
+    id: 6,
+    text: "Costumo gostar de realizar atividades sociais só quando estritamente necessário.",
+  },
+  {
+    id: 7,
+    text: "Frequentemente me sinto mais confortável fazendo as mesmas coisas de forma repetitiva.",
+  },
+  {
+    id: 8,
+    text: "Normalmente percebo pequenos sons que outras pessoas não percebem.",
+  },
+  {
+    id: 9,
+    text: "Normalmente consigo manter conversas regulares com outras pessoas.",
+  },
+  {
+    id: 10,
+    text: "Costumo perceber padrões em coisas ao meu redor que outras pessoas não veem.",
+  },
+];
 
 const calculateScore = (answers) => {
   let totalScore = 0;
@@ -101,15 +143,13 @@ const ResultsPage = () => {
   const handleRetake = () => {
     sessionStorage.removeItem(STORAGE_KEY_ANSWERS);
     sessionStorage.removeItem(STORAGE_KEY_INDEX);
-    sessionStorage.removeItem(STORAGE_KEY_AVATAR);
 
-    navigate("/avatar-game");
+    navigate("/questionnaire");
   };
 
   const handleFinish = () => {
     sessionStorage.removeItem(STORAGE_KEY_ANSWERS);
     sessionStorage.removeItem(STORAGE_KEY_INDEX);
-    sessionStorage.removeItem(STORAGE_KEY_AVATAR);
 
     navigate("/");
   };
@@ -145,7 +185,7 @@ const ResultsPage = () => {
           <div className="result-card">
             <div className="score-section">
               {/* GRÁFICO DE ROSCA (DONUT) */}
-
+              <h2>Resultado do Teste</h2>
               <div
                 className={`score-circle score-${
                   result.score >= 70
@@ -188,7 +228,7 @@ const ResultsPage = () => {
 
               <p className="recommendation-text">{result.recommendation}</p>
 
-              {/* Condicional para o Next Steps, agora correto */}
+              {/* Condicional para o Next Steps */}
               {result.score >= 70 && (
                 <div className="next-steps">
                   <p className="next-steps-text">{result.nextSteps}</p>
@@ -266,6 +306,7 @@ const ResultsPage = () => {
         isOpen={showDetailsModal}
         onClose={() => setShowDetailsModal(false)}
         answers={answers}
+        questions={allQuestions}
       />
     </div>
   );

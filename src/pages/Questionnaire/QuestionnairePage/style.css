@@ -120,56 +120,108 @@
   font-weight: 600;
   color: var(--texto-principal);
   margin-bottom: 30px;
-  flex-grow: 1;
+  flex-grow: 1; /* Permite que o texto empurre as opções para baixo */
 }
 
 /* ================================= */
-/* 5. OPÇÕES DE RESPOSTA */
+/* 5. OPÇÕES DE RESPOSTA ATUALIZADAS (GRID 2x2) */
 /* ================================= */
-.answer-options {
-  display: flex;
+
+.answer-options.color-grid-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
-  justify-content: space-between;
+  margin-top: auto;
 }
-
-.answer-options.full-width-options {
-  flex-direction: column;
-  gap: 10px;
-}
-
-.answer-button {
-  padding: 12px 20px;
-  font-size: 1em;
+.answer-button.color-piece-button {
+  width: 100%;
+  padding: 10px; /* Reduzimos o padding do botão para dar mais espaço à imagem */
+  height: 150px; /* Mantém a altura fixa para o grid */
+  display: flex;
+  flex-direction: column; /* Ainda como coluna, mas só com a imagem */
+  align-items: center;
+  justify-content: center; /* Centraliza a imagem verticalmente e horizontalmente */
+  border: 3px solid transparent;
+  background-color: var(--fundo-card);
+  color: var(--texto-principal); /* Mantido, mas não usado sem texto */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1.1em; /* Mantido, mas não usado sem texto */
+  font-weight: 600; /* Mantido, mas não usado sem texto */
   border-radius: 8px;
   cursor: pointer;
-  transition: var(--transicao);
+  transition: all 0.2s ease-in-out;
+}
+
+.answer-button.color-piece-button .option-image {
+  max-width: 150px; /* Aumentado o tamanho máximo para preencher melhor */
+  max-height: 150px; /* Aumentado o tamanho máximo */
+  width: auto; /* Garante que a largura se ajuste à altura (para não esmagar) */
+  height: auto; /* Garante que a altura se ajuste à largura (para não esmagar) */
+  object-fit: contain; /* Garante que a imagem se ajuste sem cortar ou esmagar */
+  margin-bottom: 0; /* Remove a margem inferior, pois o texto sumiu */
+}
+
+.answer-button.color-piece-button .option-label {
+  line-height: 1.2;
   text-align: center;
-  border: 2px solid #ccc;
-  background-color: #f9f9f9;
+  font-size: 0.9em;
+}
+
+/* 5.1. Definição das Cores e HOVER */
+/* CORES DOS BOTÕES NÃO SELECIONADOS (Borda base) */
+.answer-button.blue {
+  border: 3px solid #4a90e2;
+}
+.answer-button.green {
+  border: 3px solid #7ed321;
+}
+.answer-button.yellow {
+  border: 3px solid #f8e71c;
+}
+.answer-button.red {
+  border: 3px solid #d0021b;
+}
+
+/* Efeito HOVER (Fundo claro ao passar o mouse) */
+.answer-button.blue:hover:not(.selected) {
+  background-color: rgba(74, 144, 226, 0.1);
+}
+.answer-button.green:hover:not(.selected) {
+  background-color: rgba(126, 211, 33, 0.1);
+}
+.answer-button.yellow:hover:not(.selected) {
+  background-color: rgba(248, 231, 28, 0.1);
+}
+.answer-button.red:hover:not(.selected) {
+  background-color: rgba(208, 2, 27, 0.1);
+}
+
+/* 5.2. ESTADO SELECIONADO */
+.answer-button.color-piece-button.selected {
+  background-color: white;
   color: var(--texto-principal);
-  white-space: nowrap;
+  /* Aumenta a espessura da borda colorida para destacar a seleção */
+  border: 5px solid;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.03);
 }
 
-.answer-button.large-button {
-  width: 100%;
-  padding: 15px 25px;
+/* Aplicação da cor da borda ao estado selecionado */
+.answer-button.blue.selected {
+  border-color: #4a90e2;
 }
-
-.answer-button:hover:not(.selected) {
-  border-color: var(--destaque-azul);
-  background-color: var(--azul-claro);
+.answer-button.green.selected {
+  border-color: #7ed321;
 }
-
-/* Estado Selecionado */
-.answer-button.selected {
-  background-color: var(--destaque-azul);
-  color: white;
-  border-color: var(--destaque-azul);
-  box-shadow: 0 4px 10px rgba(75, 140, 245, 0.3);
+.answer-button.yellow.selected {
+  border-color: #f8e71c;
+}
+.answer-button.red.selected {
+  border-color: #d0021b;
 }
 
 /* ================================= */
-/* 6. NAVEGAÇÃO INFERIOR E BOTÕES */
+/* 6. NAVEGAÇÃO INFERIOR E BOTÕES (Não alterada) */
 /* ================================= */
 
 .navigation-section {
@@ -182,13 +234,6 @@
   max-width: 650px;
   margin-left: auto;
   margin-right: auto;
-}
-
-/* O grupo de navegação esquerdo agora só tem o botão Anterior */
-.nav-left-group {
-  display: flex;
-  gap: 15px;
-  align-items: center;
 }
 
 .nav-button {
@@ -217,7 +262,6 @@
   cursor: not-allowed;
 }
 
-/* Botão de Finalização */
 .result-button {
   background-color: var(--amarelo-destaque);
   color: var(--texto-principal);
@@ -235,14 +279,12 @@
 }
 
 .result-button:disabled {
-  background-color: var(
-    --amarelo-claro
-  ); /* Usa o amarelo mais claro para o estado inativo */
-  color: #a8a8a8; /* Cor do texto mais neutra */
+  background-color: var(--amarelo-claro);
+  color: #a8a8a8;
   opacity: 0.8;
   cursor: not-allowed;
-  transform: none; /* Remove a transformação de hover para o estado disabled */
-  box-shadow: none; /* Remove a sombra do estado de hover/ativo */
+  transform: none;
+  box-shadow: none;
 }
 .result-button:hover:not(:disabled) {
   background-color: #fbdc70;
@@ -260,7 +302,7 @@
   }
 
   .question-section {
-    padding-top: 70px; /* Mais espaço para o botão de topo em telas pequenas */
+    padding-top: 70px;
   }
 
   /* Ajusta a posição do botão de topo para a borda da tela */
@@ -278,6 +320,22 @@
     font-size: 1.2em;
   }
 
+  /* O GRID DE CORES 2X2 É MANTIDO AQUI */
+  .answer-options.color-grid-options {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .answer-button.color-piece-button {
+    height: 120px; /* Reduz a altura do botão no mobile */
+    padding: 15px;
+  }
+
+  .answer-button.color-piece-button .option-image {
+    width: 40px;
+    height: 40px;
+  }
+
   .navigation-section {
     flex-direction: column;
     gap: 15px;
@@ -285,18 +343,8 @@
     padding: 0;
   }
 
-  /* Faz o grupo esquerdo (Anterior) ocupar a largura total */
-  .nav-left-group {
-    width: 100%;
-    gap: 0; /* Remove gap */
-  }
-
-  /* Força o botão anterior a ser full width */
-  .nav-button.prev {
-    width: 100%;
-    justify-content: center;
-  }
-
+  /* Força os botões de navegação a serem full width */
+  .nav-button.prev,
   .result-button,
   .nav-button.next {
     width: 100%;

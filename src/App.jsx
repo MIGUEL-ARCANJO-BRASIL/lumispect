@@ -6,6 +6,7 @@ import QuestionnairePage from "./pages/Questionnaire/QuestionnairePage";
 import AvatarGame from "./pages/Questionnaire/AvatarGame";
 import ResultsPage from "./pages/Questionnaire/ResultsPage";
 import AboutUsPage from "./pages/About";
+import OptionsInstructionsPage from "./pages/Questionnaire/OptionsInstructionsPage";
 
 const References = () => (
   <div style={{ padding: "4rem", textAlign: "center" }}>
@@ -26,6 +27,10 @@ function App() {
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/references" element={<References />} />
+          <Route
+            path="/instructions-options"
+            element={<OptionsInstructionsPage />}
+          />
         </Routes>
       </div>
     </Router>

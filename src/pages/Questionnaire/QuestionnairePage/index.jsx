@@ -1,22 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./style.css";
 import Header from "../../../components/Layout/Header";
 import Footer from "../../../components/Layout/Footer";
 import { useNavigate } from "react-router-dom";
 
+// Importações das imagens das peças (deve estar no caminho correto)
+import BLUE_PIECE from "../../../assets/p-azul.png";
+import RED_PIECE from "../../../assets/p-vermelho.png";
+import YELLOW_PIECE from "../../../assets/p-amarelo.png";
+import GREEN_PIECE from "../../../assets/p-verde.png";
+
 // Chaves de armazenamento
 const STORAGE_KEY_ANSWERS = "questionnaireAnswers";
 const STORAGE_KEY_INDEX = "currentQuestionIndex";
 
-// 1. CONSTANTES DE OPÇÕES DEFINIDAS PRIMEIRO
+// ===========================================
+// 1. CONSTANTES DE OPÇÕES (ORDEM DE EXIBIÇÃO AJUSTADA)
+// ===========================================
+
+// Mantém a definição das cores e peças
+const BASE_OPTIONS_MAP = {
+  "Concordo totalmente": {
+    label: "Totalmente",
+    color: "green",
+    piece: GREEN_PIECE,
+  },
+  "Concordo parcialmente": {
+    label: "Parcialmente",
+    color: "blue",
+    piece: BLUE_PIECE,
+  },
+  "Discordo parcialmente": {
+    label: "Parcialmente",
+    color: "yellow",
+    piece: YELLOW_PIECE,
+  },
+  "Discordo totalmente": {
+    label: "Totalmente",
+    color: "red",
+    piece: RED_PIECE,
+  },
+};
+
+// ATENÇÃO: A ORDEM DESTA ARRAY DEFINE A ORDEM NO GRID
+// ORDEM SOLICITADA: VERDE, AZUL, AMARELO, VERMELHO
 const BASE_OPTIONS = [
-  "Concordo totalmente",
-  "Concordo parcialmente",
-  "Discordo parcialmente",
-  "Discordo totalmente",
+  "Concordo totalmente", // 1. VERDE
+  "Concordo parcialmente", // 2. AZUL
+  "Discordo parcialmente", // 3. AMARELO
+  "Discordo totalmente", // 4. VERMELHO
 ];
 
-// 2. MATRIZES DE PERGUNTAS (Não alteradas)
+// 2. MATRIZES DE PERGUNTAS (MANTER IGUAL EM AMBOS OS ARQUIVOS!)
 const baseQuestions = [
   {
     id: 1,
@@ -71,6 +106,7 @@ const baseQuestions = [
 ];
 
 const allQuestions = [...baseQuestions];
+const TOTAL_QUESTIONS = allQuestions.length;
 
 const QuestionnairePage = () => {
   // 1. Inicializa o estado lendo do sessionStorage
@@ -81,12 +117,55 @@ const QuestionnairePage = () => {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
     const savedIndex = sessionStorage.getItem(STORAGE_KEY_INDEX);
-    // Garante que o índice salvo é um número válido e não excede o total de perguntas
     const index = savedIndex ? parseInt(savedIndex, 10) : 0;
-    return index < allQuestions.length ? index : 0;
+    return index < TOTAL_QUESTIONS ? index : 0;
   });
 
   const navigate = useNavigate();
+
+  // ATUALIZAÇÃO 1: handleSubmit aceita as respostas finais como argumento
+  const handleSubmit = useCallback(
+    (finalAnswers) => {
+      // Agora o console.log usa as respostas completas passadas como argumento
+      console.log("Questionário Concluído. Respostas Finais:", finalAnswers);
+      sessionStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(finalAnswers));
+      sessionStorage.removeItem(STORAGE_KEY_INDEX);
+      navigate("/results");
+    },
+    [navigate]
+  );
+
+  // ATUALIZAÇÃO 2: handleNext aceita newAnswers para repassar a handleSubmit
+  const handleNext = useCallback(
+    (newAnswers) => {
+      const nextIndex = currentQuestionIndex + 1;
+
+      if (nextIndex < TOTAL_QUESTIONS) {
+        setCurrentQuestionIndex(nextIndex);
+      } else {
+        // Se for a última, passa as respostas completas para handleSubmit
+        handleSubmit(newAnswers);
+      }
+    },
+    [currentQuestionIndex, handleSubmit]
+  );
+
+  const handleAnswer = (id, value) => {
+    let newAnswers;
+    const isTogglingOff = answers[id] === value;
+
+    if (isTogglingOff) {
+      newAnswers = { ...answers };
+      delete newAnswers[id];
+      setAnswers(newAnswers);
+    } else {
+      newAnswers = { ...answers, [id]: value };
+      setAnswers(newAnswers);
+
+      // ATUALIZAÇÃO 3: Passa newAnswers para handleNext no timeout
+      setTimeout(() => handleNext(newAnswers), 150);
+    }
+  };
 
   // 2. Efeito para salvar respostas e índice sempre que eles mudam
   useEffect(() => {
@@ -95,60 +174,10 @@ const QuestionnairePage = () => {
   }, [answers, currentQuestionIndex]);
 
   const currentQuestion = allQuestions[currentQuestionIndex];
-  const isLastQuestion = currentQuestionIndex === allQuestions.length - 1;
-  const isAnswered = answers[currentQuestion.id] !== undefined;
-
-  const handleGoToGame = () => {
-    navigate(-1);
-  };
-
-  const handleAnswer = (id, value) => {
-    // A lógica de exclusão/alternância está correta, mas garante que usa setAnswers
-    if (answers[id] === value) {
-      const newAnswers = { ...answers };
-      delete newAnswers[id];
-      setAnswers(newAnswers);
-    } else {
-      setAnswers({ ...answers, [id]: value });
-    }
-  };
-
-  const handleNext = () => {
-    if (!isAnswered) return;
-
-    if (currentQuestionIndex < allQuestions.length - 1) {
-      // Esta chamada salva o novo índice através do useEffect
-      setCurrentQuestionIndex((prev) => prev + 1);
-    } else {
-      handleSubmit();
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentQuestionIndex > 0) {
-      // Esta chamada salva o novo índice através do useEffect
-      setCurrentQuestionIndex((prev) => prev - 1);
-    }
-  };
-
-  const handleSubmit = () => {
-    console.log("Questionário Concluído. Respostas Finais:", answers);
-
-    // Salva as respostas finais (embora o useEffect já tenha feito isso)
-    sessionStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(answers));
-
-    // Limpa o índice da pergunta, pois a sessão terminou
-    sessionStorage.removeItem(STORAGE_KEY_INDEX);
-
-    setTimeout(() => {
-      navigate("/results");
-    }, 0);
-  };
-
-  // Calculo de progresso
-  const progressPercentage =
-    ((currentQuestionIndex + 1) / allQuestions.length) * 100;
   const answeredCount = Object.keys(answers).length;
+
+  // CORREÇÃO: A porcentagem é baseada na contagem de respostas
+  const progressPercentage = (answeredCount / TOTAL_QUESTIONS) * 100;
 
   return (
     <div className="questionnaire-page">
@@ -163,14 +192,15 @@ const QuestionnairePage = () => {
           <div className="main-content-wrapper">
             <div className="question-section">
               <button
-                onClick={handleGoToGame}
+                onClick={() => navigate(-1)}
                 className="nav-button back-to-game top-left-button"
               >
                 <i className="fas fa-arrow-left"></i> Voltar
               </button>
+
               <div className="question-card single-question-view">
                 <p className="question-progress">
-                  Pergunta {currentQuestionIndex + 1} de {allQuestions.length} (
+                  Pergunta {currentQuestionIndex + 1} de {TOTAL_QUESTIONS} (
                   {answeredCount} respondida{answeredCount !== 1 ? "s" : ""})
                 </p>
                 <div className="progress-bar">
@@ -182,49 +212,36 @@ const QuestionnairePage = () => {
 
                 <p className="question-text">{currentQuestion.text}</p>
 
-                <div className="answer-options full-width-options">
-                  {currentQuestion.options.map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleAnswer(currentQuestion.id, option)}
-                      className={`answer-button large-button ${
-                        answers[currentQuestion.id] === option ? "selected" : ""
-                      }`}
-                      aria-pressed={answers[currentQuestion.id] === option}
-                    >
-                      {option}
-                    </button>
-                  ))}
+                {/* GRID DE CORES 2x2: A ordem é definida por BASE_OPTIONS */}
+                <div className="answer-options color-grid-options">
+                  {/* BASE_OPTIONS map: 1. Verde, 2. Azul, 3. Amarelo, 4. Vermelho */}
+                  {currentQuestion.options.map((optionText) => {
+                    const optionData = BASE_OPTIONS_MAP[optionText];
+                    if (!optionData) return null;
+
+                    const isSelected =
+                      answers[currentQuestion.id] === optionText;
+
+                    return (
+                      <button
+                        key={optionText}
+                        onClick={() =>
+                          handleAnswer(currentQuestion.id, optionText)
+                        }
+                        className={`answer-button color-piece-button ${
+                          optionData.color
+                        } ${isSelected ? "selected" : ""}`}
+                        aria-pressed={isSelected}
+                      >
+                        <img
+                          src={optionData.piece}
+                          alt={`${optionData.color} piece`}
+                          className="option-image"
+                        />
+                      </button>
+                    );
+                  })}
                 </div>
-              </div>
-
-              <div className="navigation-section">
-                <button
-                  onClick={handlePrev}
-                  className="nav-button prev"
-                  disabled={currentQuestionIndex === 0}
-                >
-                  <i className="fas fa-arrow-left"></i> Anterior
-                </button>
-
-                {isLastQuestion ? (
-                  <button
-                    onClick={handleSubmit}
-                    className="result-button final-button"
-                    disabled={!isAnswered}
-                  >
-                    <i className="fas fa-flag-checkered button-icon"></i>{" "}
-                    Finalizar
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleNext}
-                    className="nav-button next"
-                    disabled={!isAnswered}
-                  >
-                    Próxima <i className="fas fa-arrow-right"></i>
-                  </button>
-                )}
               </div>
             </div>
           </div>
