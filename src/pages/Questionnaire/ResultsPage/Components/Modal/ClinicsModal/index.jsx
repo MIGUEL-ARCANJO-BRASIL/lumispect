@@ -10,8 +10,7 @@ const caicClinics = [
     id: 1,
     name: "CAIC Alexandre Montoril",
     address: "Rua: Cel. Ferreira de Araújo, s/n",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus1",
+    mapsLink: "https://maps.app.goo.gl/aPWqirAmznVNkKiP8",
   },
   {
     id: 2,
@@ -24,64 +23,55 @@ const caicClinics = [
     id: 3,
     name: "CAIC Dr. Afrânio Soares",
     address: "Shangrilá - Av. Tancredo Neves, S/N",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus3",
+    mapsLink: "https://maps.app.goo.gl/bNtocwUQodVxwtTD6",
   },
   {
     id: 4,
     name: "CAIC Dr. Edson Melo",
     address: "Av. Cosme Ferreira, 7995",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus4",
+    mapsLink: "https://maps.app.goo.gl/dXqArkf1rVHHf8Df9",
   },
   {
     id: 5,
     name: "CAIC Dr. Rubim de Sá",
     address: "Av. Des. João Machado, S/N",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus5",
+    mapsLink: "https://maps.app.goo.gl/7nidKHJVbfGaNjek6",
   },
   {
     id: 6,
     name: "CAIC Dra. Maria Helena Freitas de Góes",
     address: "Av. Cristã, 690",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus6",
+    mapsLink: "https://maps.app.goo.gl/aW2jjDE584TgC58y6",
   },
   {
     id: 7,
     name: "CAIC Josephina de Mello",
     address: "R. Des. Filismino Soares, 213",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus7",
+    mapsLink: "https://maps.app.goo.gl/JVgNNTm5hF9MtRtb9",
   },
   {
     id: 8,
     name: "CAIC José Carlos Mestrinho",
     address: "R. Dr. Abílio Alencar, S/N",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus8",
+    mapsLink: "https://maps.app.goo.gl/gfosS9njNpfsa3sw9",
   },
   {
     id: 9,
     name: "CAIC Moura Tapajóz",
     address: "Av. Samaúma, 606",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Ana+Maria+dos+Santos+Pereira+Braga+Manaus9",
+    mapsLink: "https://maps.app.goo.gl/mGvv9Y7yCAtoEQLB8",
   },
   {
     id: 10,
     name: "CAIC TEA Dr. José Contente",
     address: "Av. Autaz Mirim, 9789",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Dr.+Afrânio+Soares+Manaus0",
+    mapsLink: "https://maps.app.goo.gl/2tB4rPkJKNWF7d7KA",
   },
   {
     id: 11,
     name: "CAIC TEA DR GILSON MOREIRA",
     address: "R. Angicos, 80",
-    mapsLink:
-      "https://www.google.com/maps/search/?api=1&query=CAIC+Dr.+Afrânio+Soares+Manaus1",
+    mapsLink: "https://maps.app.goo.gl/AtsrFDBmLiK3axT78",
   },
 ];
 
