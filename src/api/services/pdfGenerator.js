@@ -1,4 +1,4 @@
-// EM: utils/pdfGenerator.js
+// ARQUIVO: lumispect/src/api/services/pdfGenerator.js
 // Lógica de geração de PDF usando Puppeteer adaptado para Serverless.
 
 import puppeteer from "puppeteer-core";
@@ -11,12 +11,11 @@ import { fileURLToPath } from "url";
 // CONFIGURAÇÃO DE PATHS E ASSETS
 // -------------------------------------------------------------
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(__filename); // .../lumispect/src/api/services
 
-// CORREÇÃO: Define a raiz do projeto (subindo dois níveis se 'utils' estiver dentro de 'api')
-// Ajuste este caminho (path.resolve) para onde está sua pasta 'assets' em relação ao seu arquivo de API.
-const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
-const ASSETS_ROOT = path.join(PROJECT_ROOT, "assets");
+// CORREÇÃO FINAL DOS PATHS: Sobe 2 níveis (services -> api -> src), entra em assets
+// O caminho final será: .../lumispect/src/assets
+const ASSETS_ROOT = path.resolve(__dirname, "..", "..", "assets");
 
 const imagePath = path.join(ASSETS_ROOT, "logo-lumis.png");
 const templatePath = path.join(ASSETS_ROOT, "reportTemplate.html");
@@ -24,7 +23,6 @@ const templatePath = path.join(ASSETS_ROOT, "reportTemplate.html");
 // --- Lógica para converter a imagem para Base64 ---
 let BASE64_IMAGE_URL = "";
 try {
-  // Verifica o template
   if (!fs.existsSync(templatePath)) {
     console.error(
       `[PDF Generator] Template HTML não encontrado em: ${templatePath}`
@@ -41,7 +39,6 @@ try {
     console.warn(
       `[PDF Generator] Logo não encontrada. Usando fallback para URL pública.`
     );
-    // Se o Base64 falhar, use o caminho público (requer que a imagem esteja em /public no frontend)
     BASE64_IMAGE_URL = "/logo-lumis.png";
   }
 } catch (error) {
@@ -55,10 +52,9 @@ try {
 export async function generateReportPdf(reportData) {
   const { score } = reportData.result;
   const numericScore =
-    typeof score === "number" ? score : parseFloat(score) || 0; // --- Lógica de Categorização (Mantenha a sua lógica aqui) ---
+    typeof score === "number" ? score : parseFloat(score) || 0;
 
-  let category, description, recommendation;
-  // ... (Sua lógica de if/else para definir category, description e recommendation)
+  let category, description, recommendation; // --- Lógica de Categorização (Mantenha o seu conteúdo) ---
   if (numericScore >= 70) {
     category = "Alta Probabilidade de Traços no Espectro";
     description = "O resultado do seu teste indica uma forte presença...";
@@ -72,9 +68,7 @@ export async function generateReportPdf(reportData) {
     category = "Traços Comuns ou Baixa Probabilidade";
     description = "O seu resultado sugere que as suas experiências...";
     recommendation = "Se os traços causarem desconforto significativo...";
-  }
-  // --- Fim da Lógica de Categorização ---
-
+  } // --- Fim da Lógica de Categorização ---
   const chartScoreDegrees = (numericScore / 100) * 360;
   const remainingScore = 100 - numericScore;
 

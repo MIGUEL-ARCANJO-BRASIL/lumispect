@@ -1,27 +1,24 @@
-// EM: api/generate-pdf.js
-// Ponto de entrada da API no Vercel.
+// ARQUIVO: lumispect/api/generate-pdf.js
 
 import bodyParser from "body-parser";
-import { generateReportPdf } from "../utils/pdfGenerator.js"; // Ajuste o caminho conforme sua estrutura
+// CAMINHO CORRIGIDO: Sobe um nível (para lumispect/), entra em src/api/services/
+import { generateReportPdf } from "../src/api/services/pdfGenerator.js";
 
-// O Vercel espera uma função exportada como handler da API Route
+// O Vercel espera uma função exportada
 export default async function handler(req, res) {
-  // 1. Aplica o body-parser para garantir a leitura correta do JSON do frontend
+  // 1. Aplica o body-parser
   await new Promise((resolve, reject) => {
-    // body-parser para JSON
     bodyParser.json()(req, res, (err) => {
       if (err) return reject(err);
       resolve();
     });
   });
 
-  // 2. Validação do Método
   if (req.method !== "POST") {
     return res.status(405).send({ message: "Método não permitido. Use POST." });
   }
 
   try {
-    // 3. Recebe e valida os dados do frontend
     const { answers, result, questions } = req.body;
 
     if (
@@ -36,17 +33,12 @@ export default async function handler(req, res) {
       });
     }
 
-    // 4. Prepara os dados para o gerador de PDF
-    const reportData = {
-      result: result,
-      answers: answers,
-      questions: questions,
-    };
+    const reportData = { result, answers, questions };
 
-    // 5. Gera o PDF usando a função adaptada (no arquivo separado)
+    // 2. Chama a lógica principal de PDF
     const pdfBuffer = await generateReportPdf(reportData);
 
-    // 6. Envia o PDF como resposta de download
+    // 3. Envia o PDF como resposta de download
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader(
       "Content-Disposition",
