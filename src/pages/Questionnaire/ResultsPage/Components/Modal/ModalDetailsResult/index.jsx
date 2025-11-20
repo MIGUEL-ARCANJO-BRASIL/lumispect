@@ -76,7 +76,7 @@ const ModalDetailsResult = ({
     setIsDownloading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/generate-pdf", {
+      const response = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
