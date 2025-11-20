@@ -99,12 +99,22 @@ export async function generateReportPdf(reportData) {
     const executablePath = await chromium.executablePath();
 
     browser = await puppeteer.launch({
-      args: [...chromium.args, "--disable-setuid-sandbox"],
+      args: [
+        ...chromium.args,
+        "--disable-setuid-sandbox",
+        // ARGUMENTOS CRÍTICOS DE OTIMIZAÇÃO DE MEMÓRIA E RECURSOS:
+        "--no-sandbox",
+        "--disable-gpu",
+        "--disable-setuid-sandbox",
+        "--single-process",
+        "--no-zygote", // Ajudam a economizar recursos em ambientes limitados
+      ],
       defaultViewport: chromium.defaultViewport,
       executablePath: executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
     });
+
     const page = await browser.newPage(); // 2. Define o conteúdo
 
     await page.setContent(htmlTemplate, {
