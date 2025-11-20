@@ -3,116 +3,110 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Define __dirname para o modo ESM
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(__filename); // Ex: .../src/api/services/
 
-// 1. Definição das perguntas completas do questionário Lumispect (para detalhamento)
-const allQuestions = [
-  {
-    id: 1,
-    text: "Quando estou lendo uma história, normalmente me concentro mais nos personagens do que nos fatos.",
-  },
-  {
-    id: 2,
-    text: "Frequentemente me pego mais concentrado em detalhes do que no quadro geral.",
-  },
-  {
-    id: 3,
-    text: "Costumo ter dificuldades em entender o que outra pessoa está pensando ou sentindo.",
-  },
-  {
-    id: 4,
-    text: "Sou muito sensível a luzes fortes, sons altos ou texturas específicas de roupas.",
-  },
-  {
-    id: 5,
-    text: "Prefiro seguir uma rotina estrita e me sinto ansioso quando ela é quebrada.",
-  },
-  {
-    id: 6,
-    text: "Gosto de organizar coleções ou itens com base em regras ou padrões específicos.",
-  },
-  {
-    id: 7,
-    text: "Tenho dificuldade em fazer contato visual durante uma conversa.",
-  },
-  {
-    id: 8,
-    text: "Me sinto mais confortável em conversas sobre meus interesses especializados do que sobre assuntos gerais.",
-  },
-  {
-    id: 9,
-    text: "Às vezes, repito frases ou palavras que ouvi de outras pessoas ou da televisão.",
-  },
-  {
-    id: 10,
-    text: "Achei mais fácil aprender a falar do que aprender a interagir socialmente com os colegas.",
-  },
-];
+// --- Lógica para converter a imagem para Base64 ---
+// NOTA: Ajuste o caminho se sua estrutura de pastas for diferente de:
+// .../src/api/services/pdfGenerator.js
+// .../src/assets/logo-lumis.png
 
-/**
- * Função principal para gerar o PDF do relatório.
- * @param {object} reportData - Objeto contendo score, category, recommendation e answers.
- * @returns {Buffer} Buffer do PDF gerado.
- */
+const imagePath = path.join(
+  __dirname,
+  "..", // sobe de services
+  "..", // sobe de api
+  "assets", // entra em assets
+  "logo-lumis.png"
+);
+
+// Verifica se o arquivo existe e faz a conversão
+let BASE64_IMAGE_URL = "";
+try {
+  if (!fs.existsSync(imagePath)) {
+    console.error(
+      `ERRO CRÍTICO: Imagem de logo não encontrada em: ${imagePath}`
+    ); // Usa um placeholder ou lança erro
+  } else {
+    const imageBuffer = fs.readFileSync(imagePath); // Assumindo que é um PNG
+    BASE64_IMAGE_URL = `data:image/png;base64,${imageBuffer.toString(
+      "base64"
+    )}`;
+  }
+} catch (error) {
+  console.error("Erro ao ler ou converter imagem para Base64:", error.message);
+}
+// --- Fim da Lógica Base64 ---
+
 async function generateReportPdf(reportData) {
-  const { score, category, recommendation, answers } = reportData;
+  // Desestrutura APENAS o score (pontuação)
+  const { score } = reportData.result;
 
-  // 2. Definir a classe CSS baseada na pontuação
-  let scoreClass = "score-low-style";
-  if (score >= 70) {
-    scoreClass = "score-high-style";
-  } else if (score >= 40) {
-    scoreClass = "score-medium-style";
+  const numericScore =
+    typeof score === "number" ? score : parseFloat(score) || 0;
+
+  let category = "";
+  let recommendation = "";
+  let description = "";
+  if (numericScore >= 70) {
+    // Categoria: Excelente (Aderência Alta)
+    category = "Alta Probabilidade de Traços no Espectro";
+    description =
+      "O resultado do seu teste indica uma forte presença de traços avaliados pelo Lumispect. É crucial entender que esta é apenas uma triagem, mas o alinhamento com o escore máximo sugere que buscar uma avaliação profissional formal pode ser o passo mais importante para o seu autoconhecimento e bem-estar.";
+    recommendation =
+      "Recomendamos fortemente a busca por profissionais de saúde mental (Neurologista, Psiquiatra ou Psicólogo com experiência em TEA) para um diagnóstico formal e início de um plano de suporte. Temos uma lista de clínicas e especialistas parceiros que podem auxiliar neste processo.";
+  } else if (numericScore >= 40) {
+    category = "Sinais Moderados: Traços de Rigidez e Sensibilidade";
+    description =
+      "Seu resultado indica uma presença moderada de traços relacionados ao espectro. Embora o Lumispect não seja diagnóstico, esses traços podem impactar áreas da sua vida. O autoconhecimento é a chave.";
+    recommendation =
+      "Se os traços causarem desconforto significativo, uma consulta com um profissional de saúde mental é o caminho. Procure informações confiáveis e continue a se observar. Considere conversar com um psicólogo para explorar esses traços em profundidade.";
+  } else {
+    category = "Traços Comuns ou Baixa Probabilidade";
+    description =
+      "O seu resultado sugere que as suas experiências se alinham mais com o padrão neurotípico, com pouca intensidade nos traços avaliados. Continue focando no seu bem-estar geral e no autoconhecimento.";
+    recommendation =
+      "Se os traços causarem desconforto significativo, uma consulta com um profissional de saúde mental é o caminho. Procure informações confiáveis e continue a se observar. Considere conversar com um psicólogo para explorar esses traços em profundidade.";
   }
 
-  // 3. Gerar a lista de respostas detalhadas em HTML
-  const responsesListHtml = allQuestions
-    .map((q) => {
-      const answerText = answers[q.id] || "Não respondida";
-      return `
-            <div class="response-item">
-                <span class="response-id">Q${q.id}:</span>
-                <span class="response-question">${q.text}</span>
-                <span class="response-answer">${answerText}</span>
-            </div>
-        `;
-    })
-    .join("");
+  // --- FIM DA LÓGICA DE CATEGORIZAÇÃO ---
 
-  // 4. Carregar e preencher o Template HTML
-  // O caminho '..' sobe de 'services' para 'api', onde a pasta 'templates' DEVE estar.
+  const chartScoreDegrees = (numericScore / 100) * 360;
+  const remainingScore = 100 - numericScore;
+
   const templatePath = path.join(
     __dirname,
-    "..", // Sobe para 'src/api'
-    "templates", // Entra em 'src/api/templates'
+    "..",
+    "templates",
     "reportTemplate.html"
   );
-  let htmlTemplate = fs.readFileSync(templatePath, "utf8");
 
-  // Substituir variáveis no HTML
+  if (!fs.existsSync(templatePath)) {
+    throw new Error(`Template HTML não encontrado em: ${templatePath}`);
+  }
+
+  let htmlTemplate = fs.readFileSync(templatePath, "utf8"); // Substituir todas as variáveis no HTML
+
+  // ✅ AGORA USANDO AS VARIÁVEIS CALCULADAS
   htmlTemplate = htmlTemplate
     .replace("{{CATEGORY}}", category)
+    .replace("{{DESCRIPTION}}", description)
     .replace("{{RECOMMENDATION}}", recommendation)
-    .replace("{{SCORE}}", score)
-    .replace("{{SCORE_CLASS}}", scoreClass)
-    .replace("{{RESPONSES_LIST}}", responsesListHtml)
-    .replace("{{DATE}}", new Date().toLocaleDateString("pt-BR"));
+    .replace(/{{SCORE}}/g, numericScore.toFixed(0)) // Substituição global para todas as ocorrências
+    .replace("{{REMAINING_SCORE}}", remainingScore.toFixed(0)) // Arredondado
+    .replace("{{CHART_SCORE_DEG}}", chartScoreDegrees) // Valor para Chart.js
+    .replace("{{DATE}}", new Date().toLocaleDateString("pt-BR"))
+    .replace("{{LOGO_COMPOSITE_URL}}", BASE64_IMAGE_URL);
 
-  // 5. Iniciar Puppeteer para gerar o PDF
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
     headless: true,
   });
   const page = await browser.newPage();
 
-  // Define o conteúdo (HTML gerado) na página
   await page.setContent(htmlTemplate, {
     waitUntil: "networkidle0",
   });
 
-  // 6. Gerar o Buffer do PDF
   const pdfBuffer = await page.pdf({
     format: "A4",
     printBackground: true,

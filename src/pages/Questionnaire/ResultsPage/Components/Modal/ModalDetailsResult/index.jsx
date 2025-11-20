@@ -2,10 +2,21 @@ import React, { useState } from "react";
 // Importe o CSS se ele estiver em um arquivo separado, como Modal.css
 import "./style.css";
 
-// Função auxiliar para gerar conteúdo de texto para compartilhamento
+// Importação da logo (tratada pelo bundler no frontend, mas seu valor pode ser usado
+// no backend dependendo da sua configuração. Mantive a importação do seu código original).
+import LOGO_LUMIS from "../../../../../../assets/logo-lumis.png";
+const LOGO_FOR_PDF = LOGO_LUMIS; // Se você precisar da URL/caminho gerado pelo bundler no payload
+
+/**
+ * Função auxiliar para gerar conteúdo de texto formatado para compartilhamento.
+ * @param {object} result - Objeto de resultado contendo score, category, recommendation, etc.
+ * @param {object} answers - Objeto de respostas do questionário.
+ * @returns {string} - Texto formatado.
+ */
 const generateShareContent = (result, answers) => {
   let content = `*Resultado do Questionário Lumispect*\n\n`;
   content += `*Pontuação: ${result.score}%* (${result.category})\n`;
+  // Limita o texto de recomendação para o compartilhamento rápido
   content += `*Recomendação:* ${result.recommendation
     .split("Recomendamos procurar")[0]
     .trim()}\n\n`;
@@ -14,13 +25,22 @@ const generateShareContent = (result, answers) => {
 
   result.questions.forEach((q) => {
     const answer = answers[q.id] || "Não respondida";
-    content += `Q${q.id}: ${q.text}\n   R: ${answer}\n`;
+    content += `Q${q.id}: ${q.text}\n R: ${answer}\n`;
   });
 
   content += `\nLembre-se: Este é um teste de triagem e não substitui o diagnóstico clínico.`;
   return content;
 };
 
+/**
+ * Componente de Modal para exibir e gerenciar o resultado detalhado.
+ * @param {object} props - Propriedades do componente.
+ * @param {boolean} props.isOpen - Se o modal está aberto.
+ * @param {function} props.onClose - Função para fechar o modal.
+ * @param {object} props.answers - Respostas do usuário (chave: ID da pergunta, valor: resposta).
+ * @param {array} props.questions - Lista completa de perguntas (necessária para os textos).
+ * @param {object} props.result - Resultado do processamento (score, category, recommendation, description, etc.).
+ */
 const ModalDetailsResult = ({
   isOpen,
   onClose,
@@ -30,9 +50,12 @@ const ModalDetailsResult = ({
 }) => {
   // Estado para controlar a visibilidade das questões detalhadas
   const [showDetailedQuestions, setShowDetailedQuestions] = useState(false);
+  // ✅ NOVO ESTADO: Controla o estado de carregamento do PDF
+  const [isDownloading, setIsDownloading] = useState(false);
 
   if (!isOpen || !answers || !result) return null;
 
+  // Determina a cor do cabeçalho do modal baseada na pontuação
   let headerColor;
   if (result.score >= 70) {
     headerColor = "high";
@@ -42,17 +65,35 @@ const ModalDetailsResult = ({
     headerColor = "low";
   }
 
-  // FUNÇÃO DE DOWNLOAD VIA API (CORRETA)
+  /**
+   * Função para acionar o download do relatório PDF formatado via API.
+   */
   const handleDownloadPdf = async () => {
-    // Usa o 'answers' do escopo do componente (não precisa passar por parâmetro)
+    // Se já estiver baixando, ignora novos cliques
+    if (isDownloading) return;
+
+    // 1. ✅ COMEÇA O CARREGAMENTO
+    setIsDownloading(true);
+
     try {
       const response = await fetch("http://localhost:3001/generate-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // Envia o objeto de respostas
-        body: JSON.stringify({ answers, result }),
+        // DADOS ENVIADOS
+        body: JSON.stringify({
+          answers,
+          questions, // Array completo de questões
+          result: {
+            // Objeto 'result' contendo tudo
+            score: result.score,
+            category: result.category,
+            recommendation: result.recommendation,
+            description: result.description || "Descrição não fornecida.",
+          },
+          logoUrl: LOGO_FOR_PDF,
+        }),
       });
 
       if (!response.ok) {
@@ -80,9 +121,9 @@ const ModalDetailsResult = ({
       console.log("PDF baixado com sucesso!");
     } catch (error) {
       console.error("Falha ao baixar o PDF:", error);
-      alert(
-        "Erro ao gerar o relatório. Verifique se o servidor de API está rodando (porta 3001) e se as respostas foram enviadas corretamente."
-      );
+    } finally {
+      // 4. ✅ FINALIZA O CARREGAMENTO (Em caso de sucesso ou erro)
+      setIsDownloading(false);
     }
   };
 
@@ -176,9 +217,23 @@ const ModalDetailsResult = ({
           {/* NOVO BOTÃO: DOWNLOAD VIA API (RELATÓRIO FORMATADO) */}
           <button
             onClick={handleDownloadPdf}
+            // ✅ Desativa o botão durante o download
+            disabled={isDownloading}
             className="action-button download-button primary-action"
           >
-            <i className="fas fa-download button-icon"></i> Baixar Relatório PDF
+            {/* ✅ Lógica para exibir o ícone e o texto de loading */}
+            {isDownloading ? (
+              <>
+                {/* Ícone de carregamento: geralmente, 'fas fa-spinner fa-spin' */}
+                <i className="fas fa-spinner fa-spin button-icon"></i>
+                Gerando PDF...
+              </>
+            ) : (
+              <>
+                <i className="fas fa-download button-icon"></i> Baixar Relatório
+                PDF
+              </>
+            )}
           </button>
 
           <h4 className="share-prompt">Compartilhar Resultado</h4>
@@ -186,12 +241,14 @@ const ModalDetailsResult = ({
             <button
               onClick={handleShareWhatsapp}
               className="action-button share-button whatsapp-button"
+              disabled={isDownloading} // Desativa se o PDF estiver carregando
             >
               <i className="fab fa-whatsapp button-icon"></i> WhatsApp
             </button>
             <button
               onClick={handleShareEmail}
               className="action-button share-button email-button"
+              disabled={isDownloading} // Desativa se o PDF estiver carregando
             >
               <i className="fas fa-envelope button-icon"></i> Email
             </button>

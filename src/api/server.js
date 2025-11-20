@@ -7,34 +7,48 @@ const app = express();
 const PORT = 3001;
 
 // Middlewares
-app.use(cors({ origin: "http://localhost:5173" })); // Permite requisições do seu frontend Vite
-app.use(bodyParser.json()); // Processa o JSON enviado no corpo da requisição
+// Nota: O frontend espera que o backend esteja rodando.
+app.use(cors({ origin: "http://localhost:5173" }));
+app.use(bodyParser.json());
 
 // ===============================================
-// ENDPOINT PRINCIPAL: Geração de PDF (CORRIGIDO)
-// ===============================================
+// ENDPOINT PRINCIPAL: Geração de PDF
+// ===============================================// ... Seu código de setup do Express
+
 app.post("/generate-pdf", async (req, res) => {
   try {
-    // Recebe 'answers' E 'result' do frontend
-    const { answers, result } = req.body;
+    // Recebe 'answers', 'result' E 'questions' do frontend
+    const { answers, result, questions } = req.body;
 
-    if (!answers || Object.keys(answers).length === 0 || !result) {
+    if (
+      !answers ||
+      Object.keys(answers).length === 0 ||
+      !result ||
+      !questions
+    ) {
       return res.status(400).send({
         message:
-          "Dados do questionário (respostas e resultado) são necessários.",
+          "Dados do questionário (respostas, perguntas e resultado) são necessários.",
       });
-    } // EXTRAI os dados do objeto 'result' que veio do frontend (corrigindo o problema do score)
+    } // Desestruturação dos dados do resultado (apenas para organização)
 
-    const { score, category, recommendation } = result;
+    const { score, category, recommendation, description } = result;
 
     const reportData = {
-      score: score,
-      category: category,
-      recommendation: recommendation,
+      // ✅ ESTA É A ESTRUTURA CORRETA QUE ESTÁ SENDO LIDA PELO pdfGenerator.js
+      result: {
+        score,
+        category,
+        recommendation,
+        description,
+      },
       answers: answers,
+      questions: questions,
     };
-    console.log("Score recebido do frontend:", reportData.score);
-    const pdfBuffer = await generateReportPdf(reportData);
+
+    console.log("Score recebido:", reportData.result.score);
+
+    const pdfBuffer = await generateReportPdf(reportData); // Chamada da função
 
     res.set({
       "Content-Type": "application/pdf",
@@ -48,6 +62,8 @@ app.post("/generate-pdf", async (req, res) => {
     res.status(500).send({ message: "Erro interno ao gerar o relatório PDF." });
   }
 });
+
+// ... Seu código app.listen
 
 app.listen(PORT, () => {
   console.log(`PDF API Server rodando em http://localhost:${PORT}`);

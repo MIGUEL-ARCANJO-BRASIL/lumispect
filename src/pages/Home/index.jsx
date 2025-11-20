@@ -1,12 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import "./style.css";
 import lumisLogo from "../../assets/logo-lumis.png";
 import Header from "../../components/Layout/Header";
 import Footer from "../../components/Layout/Footer";
+import { useNavigate } from "react-router-dom";
+
+const STORAGE_KEY_ANSWERS = "questionnaireResultsFinal"; // ✅ LÊ DO LOCALSTORAGE
+const STORAGE_KEY_INDEX = "currentQuestionIndex";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <div className="home-container">
       <Header />
@@ -22,9 +26,17 @@ const Home = () => {
             </p>
 
             <div className="buttons-section">
-              <Link to="/instructions" className="button primary-button">
+              <button
+                onClick={() => {
+                  localStorage.removeItem(STORAGE_KEY_ANSWERS);
+                  sessionStorage.removeItem(STORAGE_KEY_INDEX);
+                  sessionStorage.removeItem("questionnaireAnswersProgress");
+                  navigate("/instructions");
+                }}
+                className="button primary-button"
+              >
                 <i className="fas fa-play"></i> Iniciar Teste
-              </Link>
+              </button>
               <a href="#sobre-projeto" className="button secondary-button">
                 <i className="fas fa-info-circle"></i> Sobre o Projeto
               </a>

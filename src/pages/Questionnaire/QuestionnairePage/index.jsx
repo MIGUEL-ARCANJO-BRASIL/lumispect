@@ -11,14 +11,13 @@ import YELLOW_PIECE from "../../../assets/p-amarelo.png";
 import GREEN_PIECE from "../../../assets/p-verde.png";
 
 // Chaves de armazenamento
-const STORAGE_KEY_ANSWERS = "questionnaireAnswers";
+const STORAGE_KEY_ANSWERS = "questionnaireResultsFinal"; // ✅ MUDOU PARA LOCALSTORAGE
 const STORAGE_KEY_INDEX = "currentQuestionIndex";
 
 // ===========================================
-// 1. CONSTANTES DE OPÇÕES (ORDEM DE EXIBIÇÃO AJUSTADA)
+// 1. CONSTANTES DE OPÇÕES
 // ===========================================
 
-// Mantém a definição das cores e peças
 const BASE_OPTIONS_MAP = {
   "Concordo totalmente": {
     label: "Totalmente",
@@ -42,8 +41,7 @@ const BASE_OPTIONS_MAP = {
   },
 };
 
-// ATENÇÃO: A ORDEM DESTA ARRAY DEFINE A ORDEM NO GRID
-// ORDEM SOLICITADA: VERDE, AZUL, AMARELO, VERMELHO
+// A ORDEM DESTA ARRAY DEFINE A ORDEM NO GRID
 const BASE_OPTIONS = [
   "Concordo totalmente", // 1. VERDE
   "Concordo parcialmente", // 2. AZUL
@@ -51,7 +49,7 @@ const BASE_OPTIONS = [
   "Discordo totalmente", // 4. VERMELHO
 ];
 
-// 2. MATRIZES DE PERGUNTAS (MANTER IGUAL EM AMBOS OS ARQUIVOS!)
+// 2. MATRIZES DE PERGUNTAS
 const baseQuestions = [
   {
     id: 1,
@@ -108,10 +106,48 @@ const baseQuestions = [
 const allQuestions = [...baseQuestions];
 const TOTAL_QUESTIONS = allQuestions.length;
 
+// ===========================================
+// COMPONENTE AUXILIAR: Legenda de Cores
+// ===========================================
+const ColorKey = () => (
+  <div className="color-key-legend">
+    <h3 className="key-title">Respostas:</h3>
+
+    <div className="key-items">
+      {BASE_OPTIONS.map((optionText) => {
+        const data = BASE_OPTIONS_MAP[optionText];
+
+        return (
+          <div key={optionText} className={`key-item ${data.color}`}>
+            <img
+              src={data.piece}
+              alt={`${data.color} piece`}
+              className="key-image"
+            />
+
+            <span className="key-label">{optionText}</span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+// ===========================================
+// COMPONENTE PRINCIPAL
+// ===========================================
+
 const QuestionnairePage = () => {
-  // 1. Inicializa o estado lendo do sessionStorage
   const [answers, setAnswers] = useState(() => {
-    const savedAnswers = sessionStorage.getItem(STORAGE_KEY_ANSWERS);
+    // Tenta carregar resultados finais (se houver) do localStorage
+    const savedAnswers = localStorage.getItem(STORAGE_KEY_ANSWERS);
+    // Se não houver, tenta carregar progresso do sessionStorage (respostas em andamento)
+    if (!savedAnswers) {
+      const savedProgress = sessionStorage.getItem(
+        "questionnaireAnswersProgress"
+      );
+      return savedProgress ? JSON.parse(savedProgress) : {};
+    }
     return savedAnswers ? JSON.parse(savedAnswers) : {};
   });
 
@@ -123,27 +159,35 @@ const QuestionnairePage = () => {
 
   const navigate = useNavigate();
 
-  // ATUALIZAÇÃO 1: handleSubmit aceita as respostas finais como argumento
+  // ✅ Gravação final usando localStorage e navegação imediata
   const handleSubmit = useCallback(
     (finalAnswers) => {
-      // Agora o console.log usa as respostas completas passadas como argumento
-      console.log("Questionário Concluído. Respostas Finais:", finalAnswers);
-      sessionStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(finalAnswers));
+      // 1. GRAVAÇÃO FINAL (AGORA NO LOCALSTORAGE)
+      localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(finalAnswers));
       sessionStorage.removeItem(STORAGE_KEY_INDEX);
+      sessionStorage.removeItem("questionnaireAnswersProgress"); // Limpa o progresso
+
+      const confirmAnswers = localStorage.getItem(STORAGE_KEY_ANSWERS);
+      console.log(
+        "GRAVAÇÃO FINAL SUCEDIDA E CONFIRMADA (agora no localStorage):",
+        confirmAnswers
+      );
+
+      // 2. NAVEGAÇÃO IMEDIATA
       navigate("/results");
     },
     [navigate]
   );
 
-  // ATUALIZAÇÃO 2: handleNext aceita newAnswers para repassar a handleSubmit
   const handleNext = useCallback(
     (newAnswers) => {
       const nextIndex = currentQuestionIndex + 1;
 
       if (nextIndex < TOTAL_QUESTIONS) {
+        // Se ainda houver perguntas, avança o índice
         setCurrentQuestionIndex(nextIndex);
       } else {
-        // Se for a última, passa as respostas completas para handleSubmit
+        // Se for a última pergunta, submete com as respostas completas
         handleSubmit(newAnswers);
       }
     },
@@ -162,21 +206,22 @@ const QuestionnairePage = () => {
       newAnswers = { ...answers, [id]: value };
       setAnswers(newAnswers);
 
-      // ATUALIZAÇÃO 3: Passa newAnswers para handleNext no timeout
-      setTimeout(() => handleNext(newAnswers), 150);
+      // Chamada síncrona/imediata
+      handleNext(newAnswers);
     }
   };
 
-  // 2. Efeito para salvar respostas e índice sempre que eles mudam
+  // Efeito para salvar o progresso (respostas em andamento) e índice sempre que eles mudam
   useEffect(() => {
-    sessionStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(answers));
+    sessionStorage.setItem(
+      "questionnaireAnswersProgress",
+      JSON.stringify(answers)
+    );
     sessionStorage.setItem(STORAGE_KEY_INDEX, currentQuestionIndex.toString());
   }, [answers, currentQuestionIndex]);
 
   const currentQuestion = allQuestions[currentQuestionIndex];
   const answeredCount = Object.keys(answers).length;
-
-  // CORREÇÃO: A porcentagem é baseada na contagem de respostas
   const progressPercentage = (answeredCount / TOTAL_QUESTIONS) * 100;
 
   return (
@@ -214,7 +259,6 @@ const QuestionnairePage = () => {
 
                 {/* GRID DE CORES 2x2: A ordem é definida por BASE_OPTIONS */}
                 <div className="answer-options color-grid-options">
-                  {/* BASE_OPTIONS map: 1. Verde, 2. Azul, 3. Amarelo, 4. Vermelho */}
                   {currentQuestion.options.map((optionText) => {
                     const optionData = BASE_OPTIONS_MAP[optionText];
                     if (!optionData) return null;
@@ -245,8 +289,11 @@ const QuestionnairePage = () => {
               </div>
             </div>
           </div>
+
+          <ColorKey />
         </div>
       </main>
+
       <Footer />
     </div>
   );
