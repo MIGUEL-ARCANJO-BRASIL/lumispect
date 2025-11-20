@@ -1,23 +1,27 @@
-import express from "express";
+// EM: api/generate-pdf.js
+// Ponto de entrada da API no Vercel.
+
 import bodyParser from "body-parser";
-import cors from "cors";
-import { generateReportPdf } from "./services/pdfGenerator.js";
+import { generateReportPdf } from "../utils/pdfGenerator.js"; // Ajuste o caminho conforme sua estrutura
 
-const app = express();
-const PORT = 3001;
+// O Vercel espera uma função exportada como handler da API Route
+export default async function handler(req, res) {
+  // 1. Aplica o body-parser para garantir a leitura correta do JSON do frontend
+  await new Promise((resolve, reject) => {
+    // body-parser para JSON
+    bodyParser.json()(req, res, (err) => {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
 
-// Middlewares
-// Nota: O frontend espera que o backend esteja rodando.
-app.use(cors({ origin: "http://localhost:5173" }));
-app.use(bodyParser.json());
+  // 2. Validação do Método
+  if (req.method !== "POST") {
+    return res.status(405).send({ message: "Método não permitido. Use POST." });
+  }
 
-// ===============================================
-// ENDPOINT PRINCIPAL: Geração de PDF
-// ===============================================// ... Seu código de setup do Express
-
-app.post("/generate-pdf", async (req, res) => {
   try {
-    // Recebe 'answers', 'result' E 'questions' do frontend
+    // 3. Recebe e valida os dados do frontend
     const { answers, result, questions } = req.body;
 
     if (
@@ -30,41 +34,31 @@ app.post("/generate-pdf", async (req, res) => {
         message:
           "Dados do questionário (respostas, perguntas e resultado) são necessários.",
       });
-    } // Desestruturação dos dados do resultado (apenas para organização)
+    }
 
-    const { score, category, recommendation, description } = result;
-
+    // 4. Prepara os dados para o gerador de PDF
     const reportData = {
-      // ✅ ESTA É A ESTRUTURA CORRETA QUE ESTÁ SENDO LIDA PELO pdfGenerator.js
-      result: {
-        score,
-        category,
-        recommendation,
-        description,
-      },
+      result: result,
       answers: answers,
       questions: questions,
     };
 
-    console.log("Score recebido:", reportData.result.score);
+    // 5. Gera o PDF usando a função adaptada (no arquivo separado)
+    const pdfBuffer = await generateReportPdf(reportData);
 
-    const pdfBuffer = await generateReportPdf(reportData); // Chamada da função
-
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition":
-        'attachment; filename="Lumispect_Relatorio_Detalhado.pdf"',
-      "Content-Length": pdfBuffer.length,
-    });
-    res.send(pdfBuffer);
+    // 6. Envia o PDF como resposta de download
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="Lumispect_Relatorio_Detalhado.pdf"'
+    );
+    res.setHeader("Content-Length", pdfBuffer.length);
+    res.status(200).send(pdfBuffer);
   } catch (error) {
-    console.error("Erro na geração do PDF:", error);
-    res.status(500).send({ message: "Erro interno ao gerar o relatório PDF." });
+    console.error("[Vercel Handler] Erro grave na geração do PDF:", error);
+    res.status(500).send({
+      message:
+        "Erro interno ao gerar o relatório PDF. Verifique os logs do Vercel.",
+    });
   }
-});
-
-// ... Seu código app.listen
-
-app.listen(PORT, () => {
-  console.log(`PDF API Server rodando em http://localhost:${PORT}`);
-});
+}
