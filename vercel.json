@@ -8,7 +8,8 @@
   "installCommand": "npm install --legacy-peer-deps --no-optional",
   "build": {
     "env": {
-      "NODE_VERSION": "20.x"
+      "NODE_VERSION": "20.x",
+      "ROLLUP_IGNORE_OPTIONAL": "true"
     }
   }
 }
