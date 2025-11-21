@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "ROLLUP_IGNORE_OPTIONAL=true vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "api": "node src/api/server.js"
@@ -44,3 +44,4 @@
   },
   "homepage": "https://github.com/MIGUEL-ARCANJO-BRASIL/lumispect#readme"
 }
+
