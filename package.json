@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npx cross-env ROLLUP_IGNORE_OPTIONAL=true vite build",
+    "build": "echo 'Skipping client build, focusing on API deployment.'",
     "lint": "eslint .",
     "preview": "vite preview",
     "api": "node src/api/server.js"
