@@ -6,6 +6,7 @@
     }
   },
   "installCommand": "npm install --legacy-peer-deps --no-optional",
+  "buildCommand": "cross-env ROLLUP_IGNORE_OPTIONAL=true vite build",
   "build": {
     "env": {
       "NODE_VERSION": "20.x",
